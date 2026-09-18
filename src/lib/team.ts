@@ -1,3 +1,10 @@
+export interface TeamStat {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  label: string;
+}
+
 export interface TeamMember {
   id: 'nick' | 'swarn';
   name: string;
@@ -7,6 +14,14 @@ export interface TeamMember {
   cardBio: string;
   fullBio: string[];
   credentials: string[];
+  /** Overlay eyebrow, e.g. 'FOUNDER PROFILE' (team page cinematic bio) */
+  profileEyebrow: string;
+  /** Champagne discipline line under the overlay title */
+  discipline: string;
+  /** Stat row shown inside the cinematic overlay (counts up on open) */
+  stats: TeamStat[];
+  /** The other member's id — used for cross-profile FLIP navigation */
+  counterpartId: 'nick' | 'swarn';
 }
 
 export const TEAM: TeamMember[] = [
@@ -22,6 +37,13 @@ export const TEAM: TeamMember[] = [
       'Specializing in corporate restructuring and multi-generational wealth planning, Nick Sidhu has served as a trusted advisor to business owners, incorporated professionals, and families across Canada for over a decade. Nick founded Rubellite Wealth to provide clients with holistic, proactive financial blueprints—eliminating inefficiencies, minimizing tax erosion, and protecting generational wealth. His strategic approach ensures every corporate structure, estate plan, and risk management tool works together seamlessly to advance long-term goals.',
     ],
     credentials: ['Corporate Tax', 'Estate Strategy'],
+    profileEyebrow: 'Founder Profile',
+    discipline: 'Corporate Tax & Estate Strategy',
+    stats: [
+      { value: 10, suffix: '+', label: 'years trusted advisor' },
+      { value: 4, label: 'integrated pillars' },
+    ],
+    counterpartId: 'swarn',
   },
   {
     id: 'swarn',
@@ -36,5 +58,12 @@ export const TEAM: TeamMember[] = [
       'Swarn works alongside lenders, business owners, and industry professionals, to simplify complex corporate ecosystems. By unifying business structuring, risk management, real estate leverage, and wealth transfer, Swarn helps clients preserve their capital, reduce tax erosion, and build long-term generational security.',
     ],
     credentials: ['Strategic Debt', 'Investment Coordination'],
+    profileEyebrow: 'Partner Profile',
+    discipline: 'Strategic Debt and Investment Coordination',
+    stats: [
+      { value: 2, prefix: '$', suffix: 'B+', label: 'funded mortgage capital' },
+      { value: 11, suffix: '+', label: 'years specialized experience' },
+    ],
+    counterpartId: 'nick',
   },
 ];
