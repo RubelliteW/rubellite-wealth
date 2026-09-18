@@ -1677,8 +1677,27 @@
 
 /* --- HERO 3D GEM (foreground plane, in front of particle canvas) --- */
 .hero { perspective: 1400px; }
-#gemCanvas { z-index: 1; }
+#gemCanvas { z-index: 2; }
 .hero-content { z-index: 3; }
+
+/* Hero ambient loop video (replaces CSS 3D gem) */
+.hero-video {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: .55;
+  filter: sepia(.25) saturate(.85) brightness(.55) contrast(1.05);
+  pointer-events: none;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 62%, transparent 0%, rgba(43,35,29,.5) 78%),
+    linear-gradient(rgba(43,35,29,.3), rgba(43,35,29,.3));
+}
+
+/* Nav brand: gem mark + wordmark */
+.nav-logo { display: flex; align-items: center; gap: .6rem; }
+.nav-logo svg { width: 26px; height: 26px; display: block; flex: none; }
 .gem3d-wrap {
   position: absolute; z-index: 2;
   right: 8%; top: 50%;
@@ -1787,8 +1806,12 @@
   .reveal { transform: none; }
   .kenburns img { animation: none; }
   .gem3d { transform: none !important; }
+  .hero-video { display: none; }
 }
   </style>
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
 <base target="_blank">
 </head>
 <body>
@@ -1859,7 +1882,15 @@
 
   <!-- Navigation -->
   <nav class="site-nav" id="siteNav">
-    <a href="#" class="nav-logo" aria-label="Rubellite Wealth Management home">Rubellite</a>
+    <a href="#" class="nav-logo" aria-label="Rubellite Wealth Management home">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polygon points="100,4 182,50 182,150 100,196 18,150 18,50" fill="none" stroke="#B8A088" stroke-width="6"/>
+        <polygon points="100,30 158,64 158,136 100,170 42,136 42,64" fill="none" stroke="#B8A088" stroke-width="3.2" opacity="0.5"/>
+        <polygon points="100,55 135,76 135,124 100,145 65,124 65,76" fill="none" stroke="#B8A088" stroke-width="2" opacity="0.3"/>
+        <circle cx="100" cy="100" r="8" fill="#B8A088" opacity="0.4"/>
+      </svg>
+      <span>Rubellite</span>
+    </a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -1877,12 +1908,9 @@
     <!-- Hero Section -->
     <section class="hero" aria-label="Introduction">
       <canvas id="gemCanvas" aria-hidden="true"></canvas>
-      <div class="gem3d-wrap" aria-hidden="true">
-        <div class="gem3d" id="gem3d">
-          <div class="facet f1"></div><div class="facet f2"></div>
-          <div class="facet f3"></div><div class="facet f4"></div><div class="edge"></div>
-        </div>
-      </div>
+      <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/img/gem-macro.jpg" aria-hidden="true">
+        <source src="assets/vid/hero-loop.mp4" type="video/mp4">
+      </video>
       <div class="hero-content">
         <span class="eyebrow reveal">Corporate Estate, Succession & Real Estate Planning</span>
         <h1 class="reveal reveal-delay-1" id="heroHeadline">Securing Legacy.<br>Structuring Wealth.</h1>
