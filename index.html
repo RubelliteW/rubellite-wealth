@@ -1,20 +1,2498 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Rubellite Wealth — holistic wealth blueprints for business owners, incorporated professionals, and high-net-worth families across Canada." />
-    <link rel="icon" type="image/svg+xml" href="/logo-facet.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <title>Rubellite Wealth — Private Wealth Advisory, Canada</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rubellite Wealth Management | Corporate Estate, Succession & Real Estate Planning</title>
+  <meta name="description" content="Rubellite Wealth Management specialises in corporate estate, succession planning, and real estate debt optimization for business owners across Canada. Securing legacy. Structuring wealth.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #F7F5F0;
+      --light-1: #EDE9E1;
+      --light-2: #E0D9CE;
+      --bright-1: #3C322A;
+      --bright-2: #B8A088;
+      --dark-1: #5C4D3C;
+      --dark-2: #6B5C4A;
+      --darkest: #2B231D;
+      --accent-glow: rgba(184, 160, 136, 0.4);
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --transition-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--cream);
+      color: var(--dark-1);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    ::selection { background: var(--bright-2); color: var(--darkest); }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    /* Page Loader */
+    .page-loader {
+      position: fixed;
+      inset: 0;
+      background: var(--darkest);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2rem;
+      transition: opacity 1.2s var(--transition-smooth), visibility 1.2s;
+    }
+    .page-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loader-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--cream);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: loaderFadeIn 0.8s ease forwards 0.2s;
+      white-space: nowrap;
+    }
+    .loader-bar {
+      width: 120px;
+      height: 1px;
+      background: rgba(184, 160, 136, 0.2);
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      animation: loaderFadeIn 0.8s ease forwards 0.4s;
+    }
+    .loader-bar::after {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bright-2);
+      animation: loaderSlide 1.5s ease-in-out forwards 0.6s;
+    }
+    @keyframes loaderFadeIn { to { opacity: 1; } }
+    @keyframes loaderSlide {
+      0% { left: -100%; }
+      50% { left: 0; }
+      100% { left: 100%; }
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--bright-2);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+    .cursor.hover {
+      width: 40px;
+      height: 40px;
+      background: rgba(184, 160, 136, 0.3);
+      mix-blend-mode: normal;
+      border: 1px solid var(--bright-2);
+    }
+    .cursor-dot {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: var(--cream);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+    @media (pointer: coarse) {
+      .cursor, .cursor-dot { display: none; }
+    }
+
+    /* Navigation */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.5rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.6s ease, backdrop-filter 0.6s ease, padding 0.4s ease;
+    }
+    .site-nav.scrolled {
+      background: rgba(247, 245, 240, 0.85);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+      padding: 1rem 4rem;
+      box-shadow: 0 1px 0 rgba(60, 50, 42, 0.06);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--darkest);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+    .nav-logo::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--bright-2);
+      transition: width 0.4s var(--transition-smooth);
+    }
+    .nav-logo:hover {
+      color: var(--bright-2);
+      text-shadow: 0 0 20px var(--accent-glow), 0 0 40px rgba(184, 160, 136, 0.2), 0 0 60px rgba(184, 160, 136, 0.1);
+      transform: translateY(-1px);
+    }
+    .nav-logo:hover::after { width: 100%; }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dark-1);
+      text-decoration: none;
+      position: relative;
+      padding: 0.25rem 0;
+      transition: color 0.3s ease;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--bright-2);
+      transition: width 0.4s var(--transition-smooth), left 0.4s var(--transition-smooth);
+    }
+    .nav-links a:hover { color: var(--darkest); }
+    .nav-links a:hover::after { width: 100%; left: 0; }
+    .nav-cta {
+      border: 1px solid var(--darkest);
+      padding: 0.6rem 1.5rem !important;
+      transition: all 0.4s ease !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover {
+      background: var(--darkest) !important;
+      color: var(--cream) !important;
+      box-shadow: 0 4px 20px rgba(43, 35, 29, 0.2);
+    }
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 1.5px;
+      background: var(--darkest);
+      transition: all 0.4s ease;
+    }
+    .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+    .nav-toggle.active span:nth-child(2) { opacity: 0; }
+    .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+    @media (max-width: 900px) {
+      .site-nav { padding: 1.25rem 1.5rem; }
+      .site-nav.scrolled { padding: 1rem 1.5rem; }
+      .nav-toggle { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 0; right: -100%;
+        width: 70%; max-width: 320px;
+        height: 100vh;
+        background: var(--cream);
+        flex-direction: column;
+        padding: 6rem 2rem 2rem;
+        gap: 2rem;
+        transition: right 0.6s var(--transition-smooth);
+        box-shadow: -10px 0 40px rgba(0,0,0,0.1);
+      }
+      .nav-links.open { right: 0; }
+      .nav-links a { font-size: 0.85rem; }
+    }
+
+    /* Reveal Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.9s var(--transition-smooth), transform 0.9s var(--transition-smooth);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-60px);
+      transition: opacity 0.9s var(--transition-smooth), transform 0.9s var(--transition-smooth);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(60px);
+      transition: opacity 0.9s var(--transition-smooth), transform 0.9s var(--transition-smooth);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.9s var(--transition-smooth), transform 0.9s var(--transition-smooth);
+    }
+    .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+    /* Cinematic Text Reveal */
+    .cinematic-text {
+      display: inline;
+    }
+    .cinematic-text .char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: charReveal 0.5s var(--transition-smooth) forwards;
+    }
+    .cinematic-text .char.space {
+      width: 0.3em;
+    }
+    @keyframes charReveal {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 8rem 4rem 6rem;
+      overflow: hidden;
+      background: var(--darkest);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -20%;
+      width: 80%; height: 150%;
+      background: radial-gradient(ellipse at center, rgba(184, 160, 136, 0.16) 0%, transparent 70%);
+      pointer-events: none;
+      animation: heroGlow 8s ease-in-out infinite alternate;
+    }
+    @keyframes heroGlow {
+      0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+      100% { transform: scale(1.1) rotate(5deg); opacity: 1; }
+    }
+    .hero-content {
+      max-width: 900px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bright-2);
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .eyebrow::before, .eyebrow::after {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--bright-2);
+      vertical-align: middle;
+      margin: 0 1rem;
+      opacity: 0.5;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--darkest);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+      min-height: 1.2em;
+    }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--dark-1);
+      max-width: 60ch;
+      margin: 0 auto 3rem;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.5rem;
+      border: 1px solid var(--darkest);
+      color: var(--darkest);
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s var(--transition-smooth);
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--darkest);
+      transition: left 0.5s var(--transition-smooth);
+      z-index: -1;
+    }
+    .btn:hover {
+      color: var(--cream);
+      border-color: var(--darkest);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(43, 35, 29, 0.15);
+    }
+    .btn:hover::before { left: 0; }
+    .btn-filled {
+      background: var(--darkest);
+      color: var(--cream);
+      border-color: var(--darkest);
+    }
+    .btn-filled::before { background: var(--bright-2); }
+    .btn-filled:hover { color: var(--darkest); border-color: var(--bright-2); }
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bright-2);
+      opacity: 0.7;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--bright-2), transparent);
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* Section headers */
+    .intro-label {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bright-2);
+      margin-bottom: 1.25rem;
+    }
+    .divider {
+      width: 50px;
+      height: 1px;
+      background: var(--bright-2);
+      margin: 1.5rem 0;
+      opacity: 0.6;
+    }
+
+    /* Testimonials */
+    .testimonials-section {
+      padding: 8rem 4rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .testimonials-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--darkest);
+      margin-bottom: 3rem;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    .testimonial-card {
+      background: white;
+      padding: 2.5rem;
+      border-left: 3px solid var(--bright-2);
+      position: relative;
+      transition: transform 0.5s var(--transition-smooth), box-shadow 0.5s var(--transition-smooth);
+    }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 1.5rem; right: 2rem;
+      font-family: var(--font-display);
+      font-size: 4rem;
+      color: var(--light-2);
+      line-height: 1;
+      opacity: 0.5;
+      transition: opacity 0.4s ease, color 0.4s ease;
+    }
+    .testimonial-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(43, 35, 29, 0.08);
+    }
+    .testimonial-card:hover::before { opacity: 0.8; color: var(--bright-2); }
+    .testimonial-text {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--dark-1);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+      font-family: var(--font-display);
+    }
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--darkest);
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+    }
+    .testimonial-title {
+      font-size: 0.8rem;
+      color: var(--bright-2);
+      margin-top: 0.25rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* Intro Section */
+    .intro {
+      padding: 8rem 4rem;
+      background: var(--light-1);
+      position: relative;
+      overflow: hidden;
+    }
+    .intro::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 20% 50%, rgba(184, 160, 136, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .intro-grid {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 6rem;
+      align-items: start;
+      position: relative;
+      z-index: 1;
+    }
+    .intro-left { position: sticky; top: 120px; }
+    .intro-left h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      color: var(--darkest);
+      line-height: 1.2;
+    }
+    .intro-right p {
+      font-size: 1.05rem;
+      color: var(--dark-1);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    .intro-right p:last-child { margin-bottom: 0; }
+
+    /* Credentials */
+    .credentials-section {
+      padding: 5rem 4rem;
+      background: var(--light-2);
+    }
+    .credentials-inner { max-width: 1300px; margin: 0 auto; }
+    .credentials-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 300;
+      color: var(--darkest);
+    }
+    .credentials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+    .credential-item {
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+    .credential-item::after {
+      content: '';
+      position: absolute;
+      right: -1.5rem;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: rgba(184, 160, 136, 0.3);
+    }
+    .credential-item:last-child::after { display: none; }
+    .credential-stat {
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--darkest);
+      font-family: var(--font-display);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, var(--darkest), var(--dark-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .credential-label {
+      font-size: 0.75rem;
+      color: var(--dark-1);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* Focus Section */
+    .focus-section {
+      padding: 8rem 4rem;
+      background: var(--cream);
+    }
+    .focus-section .inner { max-width: 1300px; margin: 0 auto; }
+    .focus-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .focus-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--darkest);
+    }
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+    @media (min-width: 1024px) {
+      .focus-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .focus-card {
+      background: white;
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.6s var(--transition-smooth), box-shadow 0.6s var(--transition-smooth);
+      cursor: default;
+    }
+    .focus-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--bright-2), var(--light-2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s var(--transition-smooth);
+    }
+    .focus-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 60px rgba(43, 35, 29, 0.1);
+    }
+    .focus-card:hover::before { transform: scaleX(1); }
+    .card-num {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--bright-2);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+    .focus-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--darkest);
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+    .focus-card p {
+      font-size: 0.9rem;
+      color: var(--dark-1);
+      line-height: 1.7;
+    }
+
+    /* Real Estate Service Section */
+    .re-service-section {
+      padding: 8rem 4rem;
+      background: var(--darkest);
+      color: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    .re-service-section::before {
+      content: '';
+      position: absolute;
+      top: -30%; left: -10%;
+      width: 60%; height: 150%;
+      background: radial-gradient(ellipse at center, rgba(184, 160, 136, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+      animation: gemPulse 6s ease-in-out infinite alternate;
+    }
+    .re-service-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .re-service-section .intro-label {
+      color: var(--bright-2);
+    }
+    .re-service-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+    }
+    .re-service-section .lead {
+      color: rgba(247, 245, 240, 0.75);
+      font-size: 1.1rem;
+      max-width: 70ch;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+    }
+    .re-service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .re-service-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(184, 160, 136, 0.15);
+      padding: 2.5rem 2rem;
+      transition: all 0.5s var(--transition-smooth);
+    }
+    .re-service-card:hover {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(184, 160, 136, 0.3);
+      transform: translateY(-4px);
+    }
+    .re-service-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 1rem;
+    }
+    .re-service-card p {
+      color: rgba(247, 245, 240, 0.65);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+    .re-service-card .re-icon {
+      width: 40px;
+      height: 40px;
+      color: var(--bright-2);
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+    }
+
+    /* Process Preview */
+    .process-preview {
+      padding: 8rem 4rem;
+      background: var(--light-1);
+      position: relative;
+    }
+    .process-preview-grid {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .process-preview h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      color: var(--darkest);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    .process-preview p {
+      color: var(--dark-1);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+    .step-mini {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.75rem 0;
+      border-bottom: 1px solid rgba(184, 160, 136, 0.2);
+      transition: padding-left 0.4s ease;
+    }
+    .step-mini:hover { padding-left: 1rem; }
+    .step-mini:last-child { border-bottom: none; }
+    .step-mini-num {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--bright-2);
+      letter-spacing: 0.1em;
+      min-width: 30px;
+      padding-top: 0.2rem;
+    }
+    .step-mini h4 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--darkest);
+      margin-bottom: 0.4rem;
+    }
+    .step-mini p {
+      font-size: 0.9rem;
+      color: var(--dark-1);
+      line-height: 1.6;
+    }
+
+    /* Team Preview */
+    .team-preview {
+      padding: 8rem 4rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .team-preview h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--darkest);
+      margin-bottom: 3rem;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
+    }
+    .team-card {
+      text-align: center;
+      position: relative;
+    }
+    .team-card-img {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--light-2), var(--light-1));
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bright-2);
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.6s var(--transition-smooth), box-shadow 0.6s var(--transition-smooth);
+    }
+    .team-card-img::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(184, 160, 136, 0.15) 100%);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .team-card:hover .team-card-img {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(43, 35, 29, 0.1);
+    }
+    .team-card:hover .team-card-img::after { opacity: 1; }
+    .team-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--darkest);
+      margin-bottom: 0.3rem;
+    }
+    .team-card .title {
+      font-size: 0.75rem;
+      color: var(--bright-2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+    .team-card .bio {
+      font-size: 0.9rem;
+      color: var(--dark-1);
+      line-height: 1.6;
+    }
+
+    /* Team Bios Full Page */
+    .team-bios-section {
+      padding: 8rem 4rem;
+      background: var(--cream);
+      display: none;
+    }
+    .team-bios-section.active {
+      display: block;
+    }
+    .team-bios-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .team-bios-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--darkest);
+      margin-bottom: 1rem;
+    }
+    .bio-card {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 4rem;
+      margin-bottom: 5rem;
+      padding-bottom: 5rem;
+      border-bottom: 1px solid rgba(184, 160, 136, 0.2);
+    }
+    .bio-card:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .bio-photo {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--light-2), var(--light-1));
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bright-2);
+    }
+    .bio-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--darkest);
+      margin-bottom: 0.25rem;
+    }
+    .bio-content .role {
+      font-size: 0.8rem;
+      color: var(--bright-2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .bio-content .specialty {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--dark-1);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    .bio-content p {
+      font-size: 1rem;
+      color: var(--dark-1);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+    .bio-back {
+      margin-top: 3rem;
+      text-align: center;
+    }
+
+    /* Canada Service */
+    .canada-service {
+      padding: 8rem 4rem;
+      background: var(--light-2);
+    }
+    .canada-service-inner { max-width: 1300px; margin: 0 auto; }
+    .canada-service h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--darkest);
+      margin-bottom: 1.5rem;
+    }
+    .service-intro {
+      font-size: 1.05rem;
+      color: var(--dark-1);
+      max-width: 70ch;
+      margin-bottom: 3rem;
+      line-height: 1.8;
+    }
+    .regions-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .region-item {
+      background: white;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-radius: 4px;
+      transition: transform 0.5s var(--transition-smooth), box-shadow 0.5s var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+    .region-item::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--bright-2);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.5s var(--transition-smooth);
+    }
+    .region-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(43, 35, 29, 0.08);
+    }
+    .region-item:hover::before { transform: scaleX(1); }
+    .region-item h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--darkest);
+      margin-bottom: 0.5rem;
+    }
+    .region-item p {
+      font-size: 0.85rem;
+      color: var(--dark-1);
+    }
+
+    /* Gem Section */
+    .gem-section {
+      padding: 8rem 4rem;
+      background: var(--darkest);
+      color: var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+    .gem-section::before {
+      content: '';
+      position: absolute;
+      top: -30%; right: -10%;
+      width: 60%; height: 150%;
+      background: radial-gradient(ellipse at center, rgba(184, 160, 136, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+      animation: gemPulse 6s ease-in-out infinite alternate;
+    }
+    @keyframes gemPulse {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(1.15); opacity: 0.9; }
+    }
+    .gem-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .gem-section .eyebrow {
+      color: var(--bright-2);
+      margin-bottom: 1.5rem;
+    }
+    .gem-section .eyebrow::before,
+    .gem-section .eyebrow::after {
+      background: var(--bright-2);
+    }
+    .gem-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 1.5rem;
+    }
+    .gem-section p {
+      color: rgba(247, 245, 240, 0.75);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .gem-section .btn {
+      border-color: var(--cream);
+      color: var(--cream);
+    }
+    .gem-section .btn::before { background: var(--cream); }
+    .gem-section .btn:hover { color: var(--darkest); }
+    .gem-mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gem-mark svg {
+      width: 100%;
+      max-width: 300px;
+      animation: gemRotate 30s linear infinite;
+    }
+    @keyframes gemRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 8rem 4rem;
+      background: var(--cream);
+    }
+    .faq-inner { max-width: 900px; margin: 0 auto; }
+    .faq-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--darkest);
+      margin-bottom: 3rem;
+    }
+    .faq-item {
+      margin-bottom: 0;
+      border-bottom: 1px solid rgba(184, 160, 136, 0.25);
+      overflow: hidden;
+    }
+    .faq-question {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--darkest);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      padding: 1.75rem 0;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    .faq-question::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--bright-2);
+      transition: width 0.5s var(--transition-smooth);
+    }
+    .faq-question:hover { color: var(--bright-2); }
+    .faq-question:hover::before { width: 100%; }
+    .faq-toggle {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--bright-2);
+      transition: transform 0.5s var(--transition-bounce);
+      min-width: 24px;
+      text-align: center;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s var(--transition-smooth), padding 0.4s ease;
+      color: var(--dark-1);
+      line-height: 1.7;
+    }
+    .faq-answer p {
+      padding-bottom: 1.75rem;
+      font-size: 0.95rem;
+    }
+    .faq-item.active .faq-answer { max-height: 500px; }
+    .faq-item.active .faq-toggle { transform: rotate(180deg); }
+
+    /* Contact Section */
+    .contact-section {
+      padding: 8rem 4rem;
+      background: var(--light-1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, var(--bright-2), transparent);
+      opacity: 0.5;
+    }
+    .contact-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--darkest);
+      margin-bottom: 1.5rem;
+      margin-top: 2rem;
+    }
+    .contact-section .lead {
+      font-size: 1.1rem;
+      color: var(--dark-1);
+      max-width: 60ch;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+    }
+    .contact-links {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .contact-links a {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--darkest);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 0.25rem;
+      transition: color 0.3s ease;
+    }
+    .contact-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--bright-2);
+      transition: width 0.4s var(--transition-smooth);
+    }
+    .contact-links a:hover { color: var(--bright-2); }
+    .contact-links a:hover::after { width: 100%; }
+    .contact-links span { color: rgba(184, 160, 136, 0.4); }
+
+    /* Contact Form */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--darkest);
+      margin-bottom: 0.5rem;
+    }
+    .form-group label .required {
+      color: var(--bright-2);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border: 1px solid rgba(184, 160, 136, 0.4);
+      background: white;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--darkest);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--bright-2);
+      box-shadow: 0 0 0 3px rgba(184, 160, 136, 0.15);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(92, 77, 60, 0.5);
+      font-weight: 300;
+    }
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235C4D3C' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .form-submit {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+    .form-privacy {
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--dark-1);
+      opacity: 0.7;
+    }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+      background: white;
+      border: 1px solid rgba(184, 160, 136, 0.3);
+    }
+    .form-success.visible { display: block; }
+    .form-success h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--darkest);
+      margin-bottom: 1rem;
+    }
+    .form-success p {
+      font-size: 1rem;
+      color: var(--dark-1);
+      line-height: 1.7;
+      max-width: 50ch;
+      margin: 0 auto;
+    }
+    .form-success .success-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1.5rem;
+      color: var(--bright-2);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(43, 35, 29, 0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background: var(--cream);
+      max-width: 560px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 3rem;
+      position: relative;
+      transform: translateY(30px) scale(0.97);
+      transition: transform 0.5s var(--transition-bounce);
+    }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0) scale(1);
+    }
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: 1px solid rgba(184, 160, 136, 0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      color: var(--darkest);
+    }
+    .modal-close:hover {
+      background: var(--darkest);
+      color: var(--cream);
+      border-color: var(--darkest);
+    }
+    .modal-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--darkest);
+      margin-bottom: 2rem;
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: 4rem;
+      background: var(--darkest);
+      color: var(--cream);
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 4rem;
+    }
+    .site-footer p {
+      color: rgba(247, 245, 240, 0.6);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .site-footer a {
+      color: rgba(247, 245, 240, 0.7);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .site-footer a:hover { color: var(--bright-2); }
+    .footer-disclaimer {
+      margin-top: 1.5rem;
+      font-size: 0.75rem !important;
+      color: rgba(247, 245, 240, 0.4) !important;
+      max-width: 50ch;
+      line-height: 1.6;
+    }
+    .footer-right { text-align: right; }
+    .footer-right p { margin-bottom: 0.75rem; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+      .focus-grid { grid-template-columns: repeat(2, 1fr); }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .re-service-grid { grid-template-columns: 1fr; }
+      .regions-grid { grid-template-columns: repeat(2, 1fr); }
+      .intro-grid, .process-preview-grid, .gem-inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .intro-left { position: relative; top: 0; }
+      .bio-card { grid-template-columns: 1fr; gap: 2rem; }
+      .bio-photo { max-width: 280px; margin: 0 auto; }
+    }
+    @media (max-width: 768px) {
+      .hero { padding: 7rem 1.5rem 5rem; }
+      .testimonials-section, .intro, .credentials-section, .focus-section,
+      .process-preview, .team-preview, .canada-service, .gem-section,
+      .faq-section, .contact-section, .re-service-section, .team-bios-section { padding: 5rem 1.5rem; }
+      .testimonials-grid, .focus-grid, .team-grid, .credentials-grid, .regions-grid { grid-template-columns: 1fr; }
+      .credential-item::after { display: none; }
+      .site-footer {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+      }
+      .footer-right { text-align: center; }
+      .hero-actions { flex-direction: column; align-items: center; }
+      .btn { width: 100%; max-width: 280px; justify-content: center; }
+      .contact-links { flex-direction: column; gap: 1rem; }
+      .focus-header { flex-direction: column; align-items: flex-start; }
+      .modal-content { padding: 2rem 1.5rem; }
+      .contact-form { max-width: 100%; }
+    }
+
+    /* Smooth scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: var(--light-2); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--bright-2); }
+  
+    /* ===== Dark hero + gem illustration (bronze/champagne only) ===== */
+    #gemCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .hero .eyebrow { color: var(--bright-2); }
+    .hero h1 { color: var(--cream); }
+    .hero-sub { color: rgba(247, 245, 240, 0.75); }
+    .hero .btn {
+      border-color: rgba(247, 245, 240, 0.55);
+      color: var(--cream);
+    }
+    .hero .btn::before { background: var(--cream); }
+    .hero .btn:hover {
+      color: var(--darkest);
+      border-color: var(--cream);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+    .hero .btn-filled {
+      background: var(--bright-2);
+      border-color: var(--bright-2);
+      color: var(--darkest);
+    }
+    .hero .btn-filled::before { background: var(--cream); }
+    .hero .btn-filled:hover { color: var(--darkest); border-color: var(--cream); }
+
+    /* Nav over dark hero: light by default, original dark scheme once scrolled */
+    .site-nav:not(.scrolled) .nav-logo { color: var(--cream); }
+    .site-nav:not(.scrolled) .nav-logo:hover { color: var(--bright-2); }
+    .site-nav:not(.scrolled) .nav-links a { color: rgba(247, 245, 240, 0.85); }
+    .site-nav:not(.scrolled) .nav-links a:hover { color: var(--bright-2); }
+    .site-nav:not(.scrolled) .nav-cta { border-color: rgba(247, 245, 240, 0.55); }
+    .site-nav:not(.scrolled) .nav-cta:hover {
+      background: var(--cream) !important;
+      color: var(--darkest) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    .site-nav:not(.scrolled) .nav-toggle span { background: var(--cream); }
+    @media (max-width: 900px) {
+      .site-nav:not(.scrolled) .nav-links a { color: var(--dark-1); }
+      .site-nav .nav-toggle.active span { background: var(--darkest); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #gemCanvas { display: none; }
+    }
+  </style>
+<base target="_blank">
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div class="page-loader" id="pageLoader">
+    <div class="loader-logo">Rubellite Wealth</div>
+    <div class="loader-bar"></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <h3>Request a Free Consultation</h3>
+      <form class="contact-form" id="modalForm">
+        <div class="form-group">
+          <label>Full Name <span class="required">*</span></label>
+          <input type="text" name="name" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address <span class="required">*</span></label>
+          <input type="email" name="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" name="phone" placeholder="(Optional)">
+        </div>
+        <div class="form-group">
+          <label>Primary Area of Focus</label>
+          <select name="focus">
+            <option value="" disabled selected>Select an area...</option>
+            <option value="corporate">Corporate & Tax Strategy</option>
+            <option value="wealth">Personal Wealth Building</option>
+            <option value="audit">Existing Structure Audit / Second Opinion</option>
+            <option value="general">General Inquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>How can we help?</label>
+          <textarea name="message" placeholder="Tell us a bit about where you are today or what you're looking to achieve..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-filled form-submit">Submit Request</button>
+        <p class="form-privacy">Your information is 100% confidential and will never be shared.</p>
+      </form>
+      <div class="form-success" id="modalSuccess">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <h3>Thank you for connecting with us.</h3>
+        <p>We have received your details and will be in touch within one business day to discuss next steps for your complimentary consultation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="site-nav" id="siteNav">
+    <a href="#" class="nav-logo" aria-label="Rubellite Wealth Management home">Rubellite</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks" role="list">
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#focus">Focus Areas</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" aria-label="Introduction">
+      <canvas id="gemCanvas" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <span class="eyebrow reveal">Corporate Estate, Succession & Real Estate Planning</span>
+        <h1 class="reveal reveal-delay-1" id="heroHeadline">Securing Legacy.<br>Structuring Wealth.</h1>
+        <p class="hero-sub reveal reveal-delay-2">We work exclusively with business owners, incorporated professionals, and their families to preserve what they have built — across generations.</p>
+        <div class="hero-actions reveal reveal-delay-3">
+          <a href="#process" class="btn btn-filled">Our Process</a>
+          <a href="#philosophy" class="btn">Our Philosophy</a>
+        </div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <span class="scroll-line"></span>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" aria-labelledby="testimonials-heading">
+      <div>
+        <span class="intro-label reveal">What Our Clients Say</span>
+        <h2 id="testimonials-heading" class="reveal reveal-delay-1">Trusted by business owners across Canada</h2>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal reveal-delay-1">
+          <p class="testimonial-text">"Rubellite's coordinated approach to our estate and tax planning has saved us significantly on succession costs. Their attention to detail is unmatched."</p>
+          <p class="testimonial-author">Michael Chen</p>
+          <p class="testimonial-title">Business Owner, Manufacturing</p>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-2">
+          <p class="testimonial-text">"Finally found advisors who understand both the legal and financial complexity of our situation. They've given us true peace of mind."</p>
+          <p class="testimonial-author">Jennifer & David Walsh</p>
+          <p class="testimonial-title">Incorporated Professionals</p>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-3">
+          <p class="testimonial-text">"Their process forced us to ask the right questions. We moved from 'how do we sell?' to 'how do we structure this properly?' — totally different outcome."</p>
+          <p class="testimonial-author">Robert Sinclair</p>
+          <p class="testimonial-title">Private Company Owner</p>
+        </div>
+        <div class="testimonial-card reveal reveal-delay-4">
+          <p class="testimonial-text">"Working with Rubellite has been instrumental in bringing clarity to our multi-generational wealth plan. Highly recommended for serious families."</p>
+          <p class="testimonial-author">The Kumar Family</p>
+          <p class="testimonial-title">Entrepreneurs & Investors</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Intro Section (Who We Are) -->
+    <section class="intro" id="philosophy" aria-labelledby="intro-heading">
+      <div class="intro-grid">
+        <div class="intro-left">
+          <span class="intro-label reveal">Who We Are</span>
+          <h2 id="intro-heading" class="reveal reveal-delay-1">A different kind of wealth practice</h2>
+          <div class="divider reveal reveal-delay-2"></div>
+          <a href="#about" class="btn reveal reveal-delay-3" style="margin-top:2rem;">About the Firm</a>
+        </div>
+        <div class="intro-right">
+          <p class="reveal reveal-delay-1">Rubellite Wealth Management is a boutique advisory practice dedicated to the complex financial needs of incorporated business owners and high-net-worth families across Canada.</p>
+          <p class="reveal reveal-delay-2">We do not manage pooled funds or serve the general public. Every relationship is deeply personal, long-term, and built around the specific legal and tax structure of each client's enterprise.</p>
+          <p class="reveal reveal-delay-3">Our work sits at the intersection of corporate tax planning, estate law, investment strategy, and real estate debt optimization — disciplines that must be coordinated, not siloed, to achieve lasting results.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Credentials Section -->
+    <section class="credentials-section" aria-labelledby="credentials-heading">
+      <div class="credentials-inner">
+        <div>
+          <span class="intro-label reveal">Our Credentials</span>
+          <h2 id="credentials-heading" class="reveal reveal-delay-1">Expertise and recognition</h2>
+        </div>
+        <div class="credentials-grid">
+          <div class="credential-item reveal reveal-delay-1">
+            <div class="credential-stat" data-count="25">0</div>
+            <p class="credential-label">Years Combined Experience</p>
+          </div>
+          <div class="credential-item reveal reveal-delay-2">
+            <div class="credential-stat" data-count="500">0</div>
+            <p class="credential-label">Client Relationships Managed</p>
+          </div>
+          <div class="credential-item reveal reveal-delay-3">
+            <div class="credential-stat" data-count="2">0</div>
+            <p class="credential-label">Billion in Real Estate Capital Funded</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Focus Section (Four Pillars) -->
+    <section class="focus-section" id="focus" aria-labelledby="focus-heading">
+      <div class="inner">
+        <div class="focus-header">
+          <div>
+            <span class="intro-label reveal">What We Do</span>
+            <h2 id="focus-heading" class="reveal reveal-delay-1">Four pillars of focus</h2>
+          </div>
+          <a href="#" class="btn reveal reveal-delay-2">All Focus Areas</a>
+        </div>
+        <div class="focus-grid" role="list">
+          <article class="focus-card reveal reveal-delay-1" role="listitem">
+            <div class="card-num">01</div>
+            <h3>Corporate Estate Planning</h3>
+            <div class="divider"></div>
+            <p>Structuring corporate assets and insurance solutions to minimise estate taxes and ensure smooth ownership transfer at death or disability.</p>
+          </article>
+          <article class="focus-card reveal reveal-delay-2" role="listitem">
+            <div class="card-num">02</div>
+            <h3>Business Succession</h3>
+            <div class="divider"></div>
+            <p>Planning the transition of ownership — to family, partners, or a third party — while preserving business value and family harmony.</p>
+          </article>
+          <article class="focus-card reveal reveal-delay-3" role="listitem">
+            <div class="card-num">03</div>
+            <h3>Wealth Accumulation</h3>
+            <div class="divider"></div>
+            <p>Coordinating retained earnings, registered accounts, and personal portfolios into a single, tax-efficient accumulation strategy.</p>
+          </article>
+          <article class="focus-card reveal reveal-delay-4" role="listitem">
+            <div class="card-num">04</div>
+            <h3>Real Estate & Debt Optimization</h3>
+            <div class="divider"></div>
+            <p>Integrating property debt structuring, liquidity management, and corporate real estate financing into your overarching wealth plan.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real Estate & Debt Optimization Service Section -->
+    <section class="re-service-section" id="realestate" aria-labelledby="re-service-heading">
+      <div class="re-service-inner">
+        <span class="intro-label reveal">Managing Both Sides of Your Balance Sheet</span>
+        <h2 id="re-service-heading" class="reveal reveal-delay-1">Real Estate & Debt Optimization</h2>
+        <p class="lead reveal reveal-delay-2">True wealth management requires optimizing your liabilities alongside your assets. Real estate is often a client's largest holding and greatest tax exposure. With over 11 years of experience and $2 Billion+ in funded mortgage capital, we integrate debt structuring directly into your broader estate, corporate, and tax blueprint.</p>
+        <div class="re-service-grid">
+          <div class="re-service-card reveal reveal-delay-1">
+            <div class="re-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </div>
+            <h4>Corporate Real Estate Structuring</h4>
+            <p>Align property ownership and debt across holding companies to safeguard assets and lower corporate tax exposure.</p>
+          </div>
+          <div class="re-service-card reveal reveal-delay-2">
+            <div class="re-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+            </div>
+            <h4>Estate Liquidity & Capital Preservation</h4>
+            <p>Plan debt structures to guarantee tax liabilities are funded upon transfer, avoiding the forced fire-sale of real estate assets.</p>
+          </div>
+          <div class="re-service-card reveal reveal-delay-3">
+            <div class="re-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+            <h4>Tax-Efficient Equity Extraction</h4>
+            <p>Leverage property assets strategically to release liquidity for new ventures, succession planning, or investment opportunities without triggering unnecessary taxable events.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Preview Section -->
+    <section class="process-preview" id="process" aria-labelledby="process-heading">
+      <div class="process-preview-grid">
+        <div>
+          <span class="intro-label reveal">How We Work</span>
+          <h2 id="process-heading" class="reveal reveal-delay-1">A deliberate, structured engagement</h2>
+          <div class="divider reveal reveal-delay-2"></div>
+          <p class="reveal reveal-delay-2" style="color:var(--dark-1);margin-top:1.5rem;font-size:1.05rem;">Every client relationship begins with deep discovery — not product recommendations. We understand your structure before proposing solutions.</p>
+          <a href="#" class="btn reveal reveal-delay-3" style="margin-top:2.5rem;">See Full Process</a>
+        </div>
+        <div>
+          <div class="step-mini reveal reveal-delay-1">
+            <div class="step-mini-num">01</div>
+            <div><h4>Discovery</h4><p>Understanding your corporate structure, family situation, and long-term objectives.</p></div>
+          </div>
+          <div class="step-mini reveal reveal-delay-2">
+            <div class="step-mini-num">02</div>
+            <div><h4>Analysis</h4><p>Reviewing existing plans, policies, tax filings, and shareholder agreements for gaps.</p></div>
+          </div>
+          <div class="step-mini reveal reveal-delay-3">
+            <div class="step-mini-num">03</div>
+            <div><h4>Strategy</h4><p>Designing a coordinated plan across estate, tax, and investment disciplines.</p></div>
+          </div>
+          <div class="step-mini reveal reveal-delay-4">
+            <div class="step-mini-num">04</div>
+            <div><h4>Implementation</h4><p>Executing solutions in the right sequence with your accountant and lawyer.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Preview Section -->
+    <section class="team-preview" id="team" aria-labelledby="team-heading">
+      <div>
+        <span class="intro-label reveal">Meet the Team</span>
+        <h2 id="team-heading" class="reveal reveal-delay-1">Experienced advisors dedicated to your legacy</h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card reveal reveal-delay-1">
+          <div class="team-card-img">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <h3>Nick Sidhu</h3>
+          <p class="title">Founder & Principal Advisor</p>
+          <p class="bio">Specializes in corporate restructuring and multi-generational wealth planning. Trusted advisor to business owners across Canada for over 10 years, focused on tax efficiency and estate optimization.</p>
+        </div>
+        <div class="team-card reveal reveal-delay-2">
+          <div class="team-card-img">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <h3>Swarn Sidhu</h3>
+          <p class="title">Founding Partner & Mortgage Broker</p>
+          <p class="bio">Specializes in strategic debt and real estate capital optimization. 11+ years of experience with over $2 Billion in funded mortgages, integrating liability management into overall wealth plans.</p>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 3rem;" class="reveal">
+        <button class="btn show-bios">Full Team Bios</button>
+      </div>
+    </section>
+
+    <!-- Full Team Bios Section (Hidden by default) -->
+    <section class="team-bios-section" id="teamBios" aria-labelledby="bios-heading">
+      <div class="team-bios-inner">
+        <span class="intro-label reveal">Leadership</span>
+        <h2 id="bios-heading" class="reveal reveal-delay-1">The People Behind Rubellite</h2>
+        <div class="divider reveal reveal-delay-2"></div>
+
+        <div class="bio-card reveal reveal-delay-1">
+          <div class="bio-photo">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <div class="bio-content">
+            <h3>Nick Sidhu</h3>
+            <p class="role">Founder & Principal Advisor</p>
+            <p class="specialty">Corporate Tax & Estate Strategy</p>
+            <p>Specializing in corporate restructuring and multi-generational wealth planning, Nick Sidhu has served as a trusted advisor to business owners, incorporated professionals, and families across Canada for over a decade. Nick founded Rubellite Wealth to provide clients with holistic, proactive financial blueprints — eliminating inefficiencies, minimizing tax erosion, and protecting generational wealth.</p>
+            <p>His strategic approach ensures every corporate structure, estate plan, and risk management tool works together seamlessly to advance long-term goals. With deep expertise in corporate tax planning, estate law, and investment strategy, Nick bridges the gap between growing assets and securing family legacies under one coordinated framework.</p>
+          </div>
+        </div>
+
+        <div class="bio-card reveal reveal-delay-2">
+          <div class="bio-photo">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <div class="bio-content">
+            <h3>Swarn Sidhu</h3>
+            <p class="role">Founding Partner & Mortgage Broker</p>
+            <p class="specialty">Strategic Debt and Investment Coordination</p>
+            <p>Swarn Sidhu helps establish Rubellite Wealth on a distinct premise: effective financial planning must address both sides of the balance sheet. Bringing over 11 years of specialized mortgage experience and a track record of funding more than $2 Billion in real estate capital, Swarn provides clients with a rare dual perspective in wealth advisory — merging advanced estate and tax planning with high-level leverage and asset optimization.</p>
+            <p>Swarn works alongside lenders, business owners, and industry professionals to simplify complex corporate ecosystems. By unifying business structuring, risk management, real estate leverage, and wealth transfer, Swarn helps clients preserve their capital, reduce tax erosion, and build long-term generational security.</p>
+          </div>
+        </div>
+
+        <div class="bio-back">
+          <button class="btn hide-bios">Back to Overview</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Canada Service Section -->
+    <section class="canada-service" id="about" aria-labelledby="canada-heading">
+      <div class="canada-service-inner">
+        <span class="intro-label reveal">Our Reach</span>
+        <h2 id="canada-heading" class="reveal reveal-delay-1">Serving business owners across Canada</h2>
+        <p class="service-intro reveal reveal-delay-2">We work with clients from coast to coast, utilizing remote advisory capabilities to deliver the same depth of expertise and personal attention regardless of location. Tax and estate planning strategies vary by province — our team understands the nuances of each jurisdiction.</p>
+        <div class="regions-grid">
+          <div class="region-item reveal reveal-delay-1">
+            <h3>British Columbia</h3>
+            <p>Headquarters & primary service region</p>
+          </div>
+          <div class="region-item reveal reveal-delay-2">
+            <h3>Alberta</h3>
+            <p>Growing client base & regular engagements</p>
+          </div>
+          <div class="region-item reveal reveal-delay-3">
+            <h3>Ontario</h3>
+            <p>Toronto GTA & remote client relationships</p>
+          </div>
+          <div class="region-item reveal reveal-delay-4">
+            <h3>Other Provinces</h3>
+            <p>Coordinated planning with local advisors</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gem Section (Why Rubellite) -->
+    <section class="gem-section" aria-label="About Rubellite">
+      <div class="gem-inner">
+        <div>
+          <span class="eyebrow reveal">The Name</span>
+          <h2 class="reveal reveal-delay-1">Why Rubellite</h2>
+          <div class="divider reveal reveal-delay-2" style="background:rgba(184,160,136,0.45);"></div>
+          <p class="reveal reveal-delay-2">Rubellite is a rare variety of tourmaline — prized for its exceptional clarity and deep, enduring colour. Like the gemstone, our practice is defined by precision, rarity, and permanence.</p>
+          <p class="reveal reveal-delay-3">We work with a select number of clients to ensure every relationship receives the depth of attention it deserves.</p>
+          <a href="#about" class="btn reveal reveal-delay-4" style="margin-top:2rem;">About the Firm</a>
+        </div>
+        <div class="gem-mark reveal-scale" aria-hidden="true">
+          <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="100,4 182,50 182,150 100,196 18,150 18,50" fill="none" stroke="#F6F3EC" stroke-width="1.5"/>
+            <polygon points="100,30 158,64 158,136 100,170 42,136 42,64" fill="none" stroke="#F6F3EC" stroke-width="0.8" opacity="0.5"/>
+            <polygon points="100,55 135,76 135,124 100,145 65,124 65,76" fill="none" stroke="#F6F3EC" stroke-width="0.5" opacity="0.3"/>
+            <circle cx="100" cy="100" r="2.5" fill="#F6F3EC" opacity="0.4"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" aria-labelledby="faq-heading">
+      <div class="faq-inner">
+        <span class="intro-label reveal">Questions?</span>
+        <h2 id="faq-heading" class="reveal reveal-delay-1">Frequently asked questions</h2>
+        <div style="margin-top: 3rem;">
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>What makes Rubellite different from other wealth advisors?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>We specialize exclusively in corporate estate and succession planning. Rather than general investment advice, we coordinate across tax, legal, and investment strategy for incorporated business owners. This specialized focus means deeper expertise in your specific situation.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Who is a typical Rubellite client?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>While we frequently work with incorporated business owners, professionals (such as doctors, dentists, and lawyers), high-net-worth families, and their successors to optimize substantial assets and tax strategies, we strongly believe that no client is too small. Frankly, the sooner you start planning with us, the better positioned you will be for the future. Whether you are just starting to build your wealth or are looking to manage an existing estate, we are here to help you grow.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Are you just another insurance broker?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Not at all. We view insurance not as a standalone product, but as a strategic lever within a complete financial plan. As wealth advisors, our core focus is helping you structure, protect, and grow your overall wealth — integrating tax planning, corporate strategies, and estate design to ensure every strategy actively protects and advances your long-term goals.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Do you help with real estate and debt management as part of wealth planning?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Yes. Real estate is often a client's largest asset — and liability. With over 11 years of experience and $2B+ in funded real estate capital, we integrate property debt structuring, liquidity management, and corporate real estate financing directly into your overarching wealth and estate plan.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>What if I already have a financial plan or structure in place?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>That is no problem at all — in fact, we would be happy to audit your current setup at no cost to you. Wealth isn't stagnant; it is constantly growing and evolving, and your planning and corporate structure should adapt right alongside it. We can provide a second set of eyes to ensure you aren't leaving any opportunities on the table.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>How do remote relationships work?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>We serve clients across Canada through a combination of secure video meetings, phone consultations, and detailed documentation. Initial discovery is typically conducted in person or via video conference. We work with your local accountant and lawyer to ensure all advice is properly implemented.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section" aria-labelledby="contact-heading">
+      <h2 id="contact-heading" class="reveal">Begin a conversation</h2>
+      <p class="lead reveal reveal-delay-1">Introductory consultations are complimentary and confidential. We work with incorporated business owners, professionals, and families with meaningful estate planning needs.</p>
+      <div class="contact-links reveal reveal-delay-2">
+        <a href="mailto:info@rubellitewealth.com">info@rubellitewealth.com</a>
+        <span>&#8212;</span>
+        <a href="tel:+17787141691">778-714-1691</a>
+        <span>&#8212;</span>
+        <a href="#process">How We Work</a>
+      </div>
+      <div style="margin-top: 4rem;" class="reveal reveal-delay-3">
+        <button class="btn btn-filled open-modal" style="font-size: 0.8rem; padding: 1.1rem 3rem;">Request a Free Consultation</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <p>&copy; 2026 Rubellite Wealth Management. All rights reserved.</p>
+      <p>Serving business owners across Canada &nbsp;&middot;&nbsp; <a href="mailto:info@rubellitewealth.com">info@rubellitewealth.com</a></p>
+      <p class="footer-disclaimer">The information on this website is for general informational purposes only and does not constitute financial, legal, or tax advice.</p>
+    </div>
+    <div class="footer-right">
+      <p><a href="#philosophy">Philosophy</a> &nbsp;&middot;&nbsp; <a href="#focus">Focus Areas</a> &nbsp;&middot;&nbsp; <a href="#process">Process</a></p>
+      <p><a href="#team">Team</a> &nbsp;&middot;&nbsp; <a href="#about">About</a></p>
+    </div>
+  </footer>
+
+  <script>
+
+    // ============================================
+    // PAGE LOADER
+    // ============================================
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('pageLoader').classList.add('hidden');
+      }, 1800);
+    });
+
+    // ============================================
+    // CUSTOM CURSOR
+    // ============================================
+    const cursor = document.getElementById('cursor');
+    const cursorDot = document.getElementById('cursorDot');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    let dotX = 0, dotY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.12;
+      cursorY += (mouseY - cursorY) * 0.12;
+      dotX += (mouseX - dotX) * 0.35;
+      dotY += (mouseY - dotY) * 0.35;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      cursorDot.style.left = dotX + 'px';
+      cursorDot.style.top = dotY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    const hoverElements = document.querySelectorAll('a, button, .focus-card, .testimonial-card, .region-item, .faq-question, input, select, textarea');
+    hoverElements.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // ============================================
+    // NAVIGATION SCROLL EFFECT
+    // ============================================
+    const siteNav = document.getElementById('siteNav');
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 80) {
+        siteNav.classList.add('scrolled');
+      } else {
+        siteNav.classList.remove('scrolled');
+      }
+    });
+
+    // ============================================
+    // MOBILE MENU
+    // ============================================
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      navLinks.classList.toggle('open');
+      const isOpen = navLinks.classList.contains('open');
+      navToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('active');
+        navLinks.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // ============================================
+    // SCROLL REVEAL
+    // ============================================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          const stat = entry.target.querySelector('.credential-stat');
+          if (stat && !stat.classList.contains('counted')) {
+            stat.classList.add('counted');
+            animateCount(stat);
+          }
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+      revealObserver.observe(el);
+    });
+    document.querySelectorAll('.credential-item').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // ============================================
+    // NUMBER COUNT ANIMATION
+    // ============================================
+    function animateCount(element) {
+      const target = parseInt(element.getAttribute('data-count'));
+      const isBillion = element.nextElementSibling.textContent.includes('Billion');
+      const duration = 2000;
+      const start = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(easeOut * target);
+
+        if (isBillion) {
+          element.textContent = '$' + current + 'B+';
+        } else {
+          element.textContent = current + '+';
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    // ============================================
+    // FAQ ACCORDION
+    // ============================================
+    document.querySelectorAll('.faq-question').forEach(question => {
+      question.addEventListener('click', () => {
+        const item = question.closest('.faq-item');
+        document.querySelectorAll('.faq-item.active').forEach(activeItem => {
+          if (activeItem !== item) {
+            activeItem.classList.remove('active');
+          }
+        });
+        item.classList.toggle('active');
+      });
+    });
+
+    // ============================================
+    // SMOOTH SCROLL FOR ANCHOR LINKS
+    // ============================================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offset = 80;
+          const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // ============================================
+    // CINEMATIC TEXT REVEAL WITH AUDIO
+    // ============================================
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playSnippetSound() {
+      if (!audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.02);
+        gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.05);
+      } catch(e) {}
+    }
+
+    function cinematicReveal(element, delay = 2200) {
+      const text = element.innerHTML;
+      element.innerHTML = '';
+      element.classList.add('cinematic-text');
+
+      const lines = text.split('<br>');
+      let charIndex = 0;
+
+      lines.forEach((line, lineIdx) => {
+        const lineSpan = document.createElement('span');
+        lineSpan.style.display = 'block';
+        if (lineIdx > 0) lineSpan.style.marginTop = '0.2em';
+
+        const chars = line.split('');
+        chars.forEach((char) => {
+          const span = document.createElement('span');
+          if (char === ' ') {
+            span.className = 'char space';
+            span.innerHTML = '&nbsp;';
+          } else {
+            span.className = 'char';
+            span.textContent = char;
+          }
+          span.style.animationDelay = (delay / 1000 + charIndex * 0.04) + 's';
+          lineSpan.appendChild(span);
+          charIndex++;
+        });
+
+        element.appendChild(lineSpan);
+      });
+
+      setTimeout(() => {
+        initAudio();
+        playSnippetSound();
+      }, delay);
+
+      for (let i = 1; i < charIndex; i += 8) {
+        setTimeout(() => {
+          if (audioCtx && Math.random() > 0.6) {
+            playSnippetSound();
+          }
+        }, delay + i * 40);
+      }
+    }
+
+    window.addEventListener('load', () => {
+      const heroHeadline = document.getElementById('heroHeadline');
+      if (heroHeadline) {
+        cinematicReveal(heroHeadline, 2200);
+      }
+    });
+
+    document.addEventListener('click', initAudio, { once: true });
+    document.addEventListener('touchstart', initAudio, { once: true });
+
+    // ============================================
+    // TEAM BIOS TOGGLE
+    // ============================================
+    const teamPreview = document.querySelector('.team-preview');
+    const teamBios = document.getElementById('teamBios');
+    const showBiosBtn = document.querySelector('.show-bios');
+    const hideBiosBtn = document.querySelector('.hide-bios');
+
+    if (showBiosBtn && teamBios) {
+      showBiosBtn.addEventListener('click', () => {
+        teamPreview.style.display = 'none';
+        teamBios.style.display = 'block';
+        teamBios.classList.add('active');
+        window.scrollTo({
+          top: teamBios.offsetTop - 80,
+          behavior: 'smooth'
+        });
+        // Trigger reveal animations for newly visible elements
+        setTimeout(() => {
+          teamBios.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+            revealObserver.observe(el);
+            el.classList.add('visible');
+          });
+        }, 100);
+      });
+    }
+
+    if (hideBiosBtn && teamPreview) {
+      hideBiosBtn.addEventListener('click', () => {
+        teamBios.style.display = 'none';
+        teamBios.classList.remove('active');
+        teamPreview.style.display = 'block';
+        window.scrollTo({
+          top: teamPreview.offsetTop - 80,
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    // ============================================
+    // MODAL
+    // ============================================
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+    const modalForm = document.getElementById('modalForm');
+    const modalSuccess = document.getElementById('modalSuccess');
+
+    function openModal() {
+      modalOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        modalForm.style.display = 'block';
+        modalSuccess.classList.remove('visible');
+        modalForm.reset();
+      }, 400);
+    }
+
+    document.querySelectorAll('.open-modal').forEach(btn => {
+      btn.addEventListener('click', openModal);
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+        closeModal();
+      }
+    });
+
+    modalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      modalForm.style.display = 'none';
+      modalSuccess.classList.add('visible');
+    });
+
+    // ============================================
+    // MAGNETIC BUTTON EFFECT
+    // ============================================
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
+      });
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+    });
+  
+    // ============================================
+    // GEM FIELD — cursor-reactive facet illustration (hero)
+    // Palette-locked to brand bronze/champagne tones.
+    // ============================================
+    (function () {
+      const canvas = document.getElementById('gemCanvas');
+      if (!canvas) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const ctx = canvas.getContext('2d');
+      const heroEl = canvas.parentElement;
+
+      const BRONZE = '184, 160, 136';   // --bright-2
+      const CREAM  = '246, 243, 236';   // gem-mark strokes
+      const TAUPE  = '140, 125, 108';
+
+      let W = 0, H = 0, dpr = 1;
+      let particles = [];
+      let tX = 0.5, tY = 0.5;   // cursor target (normalized)
+      let pX = 0.5, pY = 0.5;   // parallax (lerped)
+      let rot = 0;
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = heroEl.clientWidth; H = heroEl.clientHeight;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        seed();
+      }
+
+      function seed() {
+        const count = Math.min(110, Math.floor(W * H / 16000));
+        particles = [];
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 1.6 + 0.4,
+            vx: (Math.random() - 0.5) * 0.12,
+            vy: (Math.random() - 0.5) * 0.12,
+            a: Math.random() * 0.35 + 0.08,
+            depth: Math.random() * 0.8 + 0.2
+          });
+        }
+      }
+
+      heroEl.addEventListener('mousemove', (e) => {
+        const rect = heroEl.getBoundingClientRect();
+        tX = (e.clientX - rect.left) / rect.width;
+        tY = (e.clientY - rect.top) / rect.height;
+      });
+      heroEl.addEventListener('mouseleave', () => { tX = 0.5; tY = 0.5; });
+
+      function drawGem(cx, cy, R, tiltX, tiltY) {
+        // rotating hexagonal gem wireframe, champagne hairlines
+        const layers = [
+          { r: 1.0, alpha: 0.5,  width: 1.4, speed: 1.0 },
+          { r: 0.68, alpha: 0.3, width: 0.8, speed: -0.7 },
+          { r: 0.4, alpha: 0.18, width: 0.6, speed: 1.3 }
+        ];
+        layers.forEach((L) => {
+          const rr = R * L.r;
+          const angle = rot * L.speed;
+          ctx.beginPath();
+          for (let i = 0; i <= 6; i++) {
+            const a = angle + (Math.PI / 3) * i;
+            const px = cx + Math.cos(a) * rr + tiltX * L.r;
+            const py = cy + Math.sin(a) * rr * 0.92 + tiltY * L.r;
+            i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+          }
+          ctx.strokeStyle = 'rgba(' + CREAM + ',' + L.alpha + ')';
+          ctx.lineWidth = L.width;
+          ctx.stroke();
+          // facet spokes on outer layer
+          if (L.r === 1.0) {
+            for (let i = 0; i < 6; i++) {
+              const a = angle + (Math.PI / 3) * i;
+              ctx.beginPath();
+              ctx.moveTo(cx + tiltX, cy + tiltY);
+              ctx.lineTo(cx + Math.cos(a) * rr + tiltX, cy + Math.sin(a) * rr * 0.92 + tiltY);
+              ctx.strokeStyle = 'rgba(' + BRONZE + ',0.10)';
+              ctx.lineWidth = 0.6;
+              ctx.stroke();
+            }
+          }
+        });
+        // core glow
+        const g = ctx.createRadialGradient(cx + tiltX, cy + tiltY, 0, cx + tiltX, cy + tiltY, R * 1.6);
+        g.addColorStop(0, 'rgba(' + BRONZE + ',0.10)');
+        g.addColorStop(1, 'rgba(' + BRONZE + ',0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(cx - R * 2, cy - R * 2, R * 4, R * 4);
+      }
+
+      function frame() {
+        ctx.clearRect(0, 0, W, H);
+        pX += (tX - pX) * 0.045;
+        pY += (tY - pY) * 0.045;
+        const offX = (pX - 0.5), offY = (pY - 0.5);
+        rot += 0.0016;
+
+        // particles with depth parallax
+        const mx = pX * W, my = pY * H;
+        for (const p of particles) {
+          p.x += p.vx; p.y += p.vy;
+          // gentle cursor repulsion
+          const dx = p.x - mx, dy = p.y - my;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < 12000) { p.x += dx * 0.0016; p.y += dy * 0.0016; }
+          if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+          if (p.y < -10) p.y = H + 10; if (p.y > H + 10) p.y = -10;
+          ctx.beginPath();
+          ctx.arc(p.x + offX * 34 * p.depth, p.y + offY * 34 * p.depth, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(' + BRONZE + ',' + p.a + ')';
+          ctx.fill();
+        }
+        // facet constellation links
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i], b = particles[j];
+            const dx = a.x - b.x, dy = a.y - b.y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            if (d < 110) {
+              ctx.beginPath();
+              ctx.moveTo(a.x + offX * 34 * a.depth, a.y + offY * 34 * a.depth);
+              ctx.lineTo(b.x + offX * 34 * b.depth, b.y + offY * 34 * b.depth);
+              ctx.strokeStyle = 'rgba(' + TAUPE + ',' + (0.10 * (1 - d / 110)) + ')';
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+        // hero gem — right of center, cursor-tilted
+        const R = Math.min(W, H) * 0.26;
+        drawGem(W * 0.72, H * 0.46, R, offX * 46, offY * 30);
+
+        requestAnimationFrame(frame);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      frame();
+    })();
+  </script>
+</body>
 </html>
