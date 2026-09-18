@@ -1625,6 +1625,169 @@
       .scroll-progress { display: none; }
       .credential-stat::after { transition: none; transform: translateX(-50%) scaleX(1); }
     }
+  
+/* ============ V5 DEPTH & MEDIA SYSTEM ============ */
+:root {
+  --persp-card: 1000px;
+  --z-lift-sm: 12px;
+  --z-lift-md: 30px;
+  --z-lift-lg: 60px;
+  --shadow-sm: 0 6px 18px rgba(43,35,29,.08);
+  --shadow-md: 0 18px 45px rgba(43,35,29,.12);
+  --shadow-lg: 0 35px 80px rgba(43,35,29,.18);
+  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --- 3D tilt cards (replaces flat translateY hover) --- */
+.focus-grid, .team-grid, .regions-grid, .testimonials-grid { perspective: var(--persp-card); }
+.focus-card, .team-card, .region-item, .testimonial-card, .bio-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.focus-card { box-shadow: var(--shadow-sm); }
+.focus-card > * { transform: translateZ(var(--z-lift-sm)); transform-style: preserve-3d; }
+.focus-card:hover { box-shadow: var(--shadow-lg); }
+.team-card-img, .bio-photo { box-shadow: var(--shadow-sm); }
+.team-card:hover .team-card-img, .bio-card:hover .bio-photo { box-shadow: var(--shadow-md); }
+
+/* --- Reveal from depth (upgrades existing .reveal; JS adds .visible) --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px) translateZ(-80px) rotateX(6deg);
+  transition: opacity .9s var(--transition-smooth),
+              transform .9s var(--transition-smooth);
+}
+.reveal.visible, .reveal.in { opacity: 1; transform: none; }
+
+/* --- Glassmorphism nav --- */
+.site-nav.scrolled {
+  background: rgba(247,245,240,.72);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 1px 0 rgba(184,160,136,.35), 0 10px 30px rgba(43,35,29,.06);
+}
+
+/* --- Dimensional buttons (works WITH existing magnetic JS) --- */
+.btn-filled {
+  background: linear-gradient(180deg, #3C322A 0%, var(--darkest) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 8px 20px rgba(43,35,29,.25);
+}
+.btn-filled:active { transform: translateY(1px) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 3px 8px rgba(43,35,29,.3); }
+.btn:not(.btn-filled):hover { box-shadow: var(--shadow-md); }
+
+/* --- HERO 3D GEM (foreground plane, in front of particle canvas) --- */
+.hero { perspective: 1400px; }
+#gemCanvas { z-index: 1; }
+.hero-content { z-index: 3; }
+.gem3d-wrap {
+  position: absolute; z-index: 2;
+  right: 8%; top: 50%;
+  width: clamp(220px, 26vw, 420px); aspect-ratio: 1;
+  transform: translateY(-50%);
+  perspective: 1200px; pointer-events: none;
+}
+.gem3d {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 45px 60px rgba(0,0,0,.55));
+}
+.gem3d .facet {
+  position: absolute; inset: 0;
+  clip-path: polygon(50% 2%, 91% 25%, 91% 75%, 50% 98%, 9% 75%, 9% 25%);
+}
+.gem3d .f1 { transform: translateZ(0);    background: linear-gradient(135deg, #B8A088, #6B5C4A); }
+.gem3d .f2 { transform: translateZ(28px); background: linear-gradient(135deg, #CDAF92, #8A7460); clip-path: polygon(50% 14%, 82% 32%, 82% 68%, 50% 86%, 18% 68%, 18% 32%); }
+.gem3d .f3 { transform: translateZ(56px); background: linear-gradient(135deg, #E3CBAF, #B8A088); clip-path: polygon(50% 27%, 72% 39%, 72% 61%, 50% 73%, 28% 61%, 28% 39%); }
+.gem3d .f4 { transform: translateZ(84px); background: radial-gradient(circle at 35% 30%, #F6F3EC, #CDAF92 60%, #8A7460); clip-path: polygon(50% 40%, 62% 47%, 62% 58%, 50% 65%, 38% 58%, 38% 47%); }
+.gem3d .edge { position: absolute; inset: 0; border-radius: 4px;
+  clip-path: polygon(50% 2%, 91% 25%, 91% 75%, 50% 98%, 9% 75%, 9% 25%);
+  box-shadow: inset 0 0 0 1px rgba(246,243,236,.25); }
+
+/* --- MEDIA FIGURES (palette-graded photos/videos) --- */
+.media-frame {
+  position: relative; overflow: hidden; border-radius: 4px;
+  box-shadow: var(--shadow-lg);
+  transform: translateZ(0);
+}
+.media-frame::after { /* grain pass so photos match site film overlay */
+  content:''; position: absolute; inset: 0; pointer-events: none;
+  opacity: .05; background-image: var(--grain); background-size: 256px;
+}
+.media-frame img, .media-frame video {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: sepia(.22) saturate(.82) brightness(1.04) contrast(.96);
+}
+.kenburns img { animation: kb 22s ease-in-out infinite alternate; }
+@keyframes kb {
+  from { transform: scale(1.02) translate(0,0); }
+  to   { transform: scale(1.12) translate(-1.5%, -2%); }
+}
+
+/* Philosophy section: cinematic left column */
+.intro-grid { align-items: center; }
+.intro-media { display: none; } /* replaced below when added */
+.intro .intro-grid {
+  grid-template-columns: 1fr 1.2fr;
+  grid-template-areas: "media left" "media right";
+  column-gap: 5rem; row-gap: 2.5rem;
+}
+.intro-media {
+  display: block; height: 100%; min-height: 420px;
+  grid-area: media;
+}
+.intro .intro-left { grid-area: left; position: static; }
+.intro .intro-right { grid-area: right; }
+.parallax-bg { will-change: transform; }
+
+/* Gem section: macro photo backdrop + long shadows */
+.gem-section .gem-macro {
+  position: absolute; inset: 0; z-index: 0; overflow: hidden;
+}
+.gem-section .gem-macro img {
+  width: 100%; height: 115%; object-fit: cover;
+  filter: sepia(.3) saturate(.75) brightness(.5) contrast(1.05);
+  will-change: transform;
+}
+.gem-section .gem-inner { z-index: 2; }
+.gem-section h2, .gem-section p, .gem-section .btn { text-shadow: 40px 60px 90px rgba(0,0,0,.5); }
+
+/* Team photo slots (drop-in ready for headshots) */
+.team-card-img img, .bio-photo img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: sepia(.15) saturate(.9) contrast(.98);
+}
+.team-mono {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 3rem; color: var(--bright-2);
+  background:
+    radial-gradient(circle at 30% 25%, rgba(184,160,136,.25), transparent 55%),
+    linear-gradient(150deg, #E0D9CE, #B8A088 140%);
+}
+
+/* Canada map backdrop */
+.canada-service { position: relative; overflow: hidden; }
+.canada-map-bg {
+  position: absolute; inset: -10% -5%; z-index: 0; opacity: .07;
+  pointer-events: none; will-change: transform;
+}
+.canada-map-bg img { width: 100%; height: 100%; object-fit: contain; filter: invert(.4) sepia(.4); }
+.canada-service-inner { position: relative; z-index: 1; }
+
+/* Process stage imagery */
+.process-strip { perspective: var(--persp-card); }
+.process-stage { transform-style: preserve-3d; box-shadow: var(--shadow-md); }
+
+/* --- Responsive & motion guardrails --- */
+@media (max-width: 900px) {
+  .gem3d-wrap { right: 50%; transform: translate(50%,-50%); opacity: .35; width: 70vw; }
+  .intro .intro-grid { grid-template-columns: 1fr; grid-template-areas: "media" "left" "right"; }
+  .intro-media { min-height: 280px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transform: none; }
+  .kenburns img { animation: none; }
+  .gem3d { transform: none !important; }
+}
   </style>
 <base target="_blank">
 </head>
@@ -1714,6 +1877,12 @@
     <!-- Hero Section -->
     <section class="hero" aria-label="Introduction">
       <canvas id="gemCanvas" aria-hidden="true"></canvas>
+      <div class="gem3d-wrap" aria-hidden="true">
+        <div class="gem3d" id="gem3d">
+          <div class="facet f1"></div><div class="facet f2"></div>
+          <div class="facet f3"></div><div class="facet f4"></div><div class="edge"></div>
+        </div>
+      </div>
       <div class="hero-content">
         <span class="eyebrow reveal">Corporate Estate, Succession & Real Estate Planning</span>
         <h1 class="reveal reveal-delay-1" id="heroHeadline">Securing Legacy.<br>Structuring Wealth.</h1>
@@ -1737,21 +1906,25 @@
       </div>
       <div class="testimonials-grid">
         <div class="testimonial-card reveal reveal-delay-1">
+          <div class="team-mono" style="width:52px;height:52px;font-size:1.1rem;border-radius:50%;margin-bottom:1.25rem;">MC</div>
           <p class="testimonial-text">"Rubellite's coordinated approach to our estate and tax planning has saved us significantly on succession costs. Their attention to detail is unmatched."</p>
           <p class="testimonial-author">Michael Chen</p>
           <p class="testimonial-title">Business Owner, Manufacturing</p>
         </div>
         <div class="testimonial-card reveal reveal-delay-2">
+          <div class="team-mono" style="width:52px;height:52px;font-size:1.1rem;border-radius:50%;margin-bottom:1.25rem;">JW</div>
           <p class="testimonial-text">"Finally found advisors who understand both the legal and financial complexity of our situation. They've given us true peace of mind."</p>
           <p class="testimonial-author">Jennifer & David Walsh</p>
           <p class="testimonial-title">Incorporated Professionals</p>
         </div>
         <div class="testimonial-card reveal reveal-delay-3">
+          <div class="team-mono" style="width:52px;height:52px;font-size:1.1rem;border-radius:50%;margin-bottom:1.25rem;">RS</div>
           <p class="testimonial-text">"Their process forced us to ask the right questions. We moved from 'how do we sell?' to 'how do we structure this properly?' — totally different outcome."</p>
           <p class="testimonial-author">Robert Sinclair</p>
           <p class="testimonial-title">Private Company Owner</p>
         </div>
         <div class="testimonial-card reveal reveal-delay-4">
+          <div class="team-mono" style="width:52px;height:52px;font-size:1.1rem;border-radius:50%;margin-bottom:1.25rem;">K</div>
           <p class="testimonial-text">"Working with Rubellite has been instrumental in bringing clarity to our multi-generational wealth plan. Highly recommended for serious families."</p>
           <p class="testimonial-author">The Kumar Family</p>
           <p class="testimonial-title">Entrepreneurs & Investors</p>
@@ -1762,6 +1935,10 @@
     <!-- Intro Section (Who We Are) -->
     <section class="intro" id="philosophy" aria-labelledby="intro-heading">
       <div class="intro-grid">
+        <div class="intro-media media-frame kenburns parallax-bg" data-parallax="0.08">
+          <img src="assets/img/philosophy-ambience.jpg" alt="Warm light across a boardroom table during an estate planning session"
+               onerror="this.parentNode.style.display='none'">
+        </div>
         <div class="intro-left">
           <span class="intro-label reveal">Who We Are</span>
           <h2 id="intro-heading" class="reveal reveal-delay-1">A different kind of wealth <em>practice</em></h2>
@@ -1845,6 +2022,10 @@
         <span class="intro-label reveal">Managing Both Sides of Your Balance Sheet</span>
         <h2 id="re-service-heading" class="reveal reveal-delay-1">Real Estate & Debt Optimization</h2>
         <p class="lead reveal reveal-delay-2">True wealth management requires optimizing your liabilities alongside your assets. Real estate is often a client's largest holding and greatest tax exposure. With over 11 years of experience and $2 Billion+ in funded mortgage capital, we integrate debt structuring directly into your broader estate, corporate, and tax blueprint.</p>
+        <div class="media-frame kenburns parallax-bg" data-parallax="0.08" style="margin:3rem 0; height:340px;">
+          <img src="assets/img/realestate-architecture.jpg" alt="Warm low-angle architecture of a commercial property"
+               onerror="this.parentNode.style.display='none'">
+        </div>
         <div class="re-service-grid">
           <div class="re-service-card reveal reveal-delay-1">
             <div class="re-icon">
@@ -1900,6 +2081,12 @@
           </div>
         </div>
       </div>
+      <div class="process-strip" style="margin-top:4rem; display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem;">
+        <figure class="process-stage media-frame" style="height:180px; margin:0;"><img src="assets/img/process-discovery.jpg" alt="Discovery meeting" onerror="this.parentNode.style.display='none'"></figure>
+        <figure class="process-stage media-frame" style="height:180px; margin:0;"><img src="assets/img/process-analysis.jpg" alt="Document analysis" onerror="this.parentNode.style.display='none'"></figure>
+        <figure class="process-stage media-frame" style="height:180px; margin:0;"><img src="assets/img/process-strategy.jpg" alt="Strategy design" onerror="this.parentNode.style.display='none'"></figure>
+        <figure class="process-stage media-frame" style="height:180px; margin:0;"><img src="assets/img/process-implementation.jpg" alt="Implementation" onerror="this.parentNode.style.display='none'"></figure>
+      </div>
     </section>
 
     <!-- Team Preview Section -->
@@ -1911,7 +2098,8 @@
       <div class="team-grid">
         <div class="team-card reveal reveal-delay-1">
           <div class="team-card-img">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="assets/img/team-nick.jpg" alt="Nick Sidhu, Founder & Principal Advisor"
+              onerror="this.outerHTML='<div class=&quot;team-mono&quot;>NS</div>'">
           </div>
           <h3>Nick Sidhu</h3>
           <p class="title">Founder & Principal Advisor</p>
@@ -1919,7 +2107,8 @@
         </div>
         <div class="team-card reveal reveal-delay-2">
           <div class="team-card-img">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="assets/img/team-swarn.jpg" alt="Swarn Sidhu, Founding Partner & Mortgage Broker"
+              onerror="this.outerHTML='<div class=&quot;team-mono&quot;>SS</div>'">
           </div>
           <h3>Swarn Sidhu</h3>
           <p class="title">Founding Partner & Mortgage Broker</p>
@@ -1940,7 +2129,8 @@
 
         <div class="bio-card reveal reveal-delay-1">
           <div class="bio-photo">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="assets/img/team-nick.jpg" alt="Nick Sidhu, Founder & Principal Advisor"
+              onerror="this.outerHTML='<div class=&quot;team-mono&quot;>NS</div>'">
           </div>
           <div class="bio-content">
             <h3>Nick Sidhu</h3>
@@ -1953,7 +2143,8 @@
 
         <div class="bio-card reveal reveal-delay-2">
           <div class="bio-photo">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <img src="assets/img/team-swarn.jpg" alt="Swarn Sidhu, Founding Partner & Mortgage Broker"
+              onerror="this.outerHTML='<div class=&quot;team-mono&quot;>SS</div>'">
           </div>
           <div class="bio-content">
             <h3>Swarn Sidhu</h3>
@@ -1972,6 +2163,9 @@
 
     <!-- Canada Service Section -->
     <section class="canada-service" id="about" aria-labelledby="canada-heading">
+      <div class="canada-map-bg parallax-bg" data-parallax="0.06" aria-hidden="true">
+        <img src="assets/img/canada-map.png" alt="" onerror="this.parentNode.remove()">
+      </div>
       <div class="canada-service-inner">
         <span class="intro-label reveal">Our Reach</span>
         <h2 id="canada-heading" class="reveal reveal-delay-1">Serving business owners across Canada</h2>
@@ -1999,6 +2193,9 @@
 
     <!-- Gem Section (Why Rubellite) -->
     <section class="gem-section" aria-label="About Rubellite">
+      <div class="gem-macro parallax-bg" data-parallax="0.15" aria-hidden="true">
+        <img src="assets/img/gem-macro.jpg" alt="" onerror="this.parentNode.remove()">
+      </div>
       <div class="gem-inner">
         <div>
           <span class="eyebrow reveal">The Name</span>
@@ -2597,5 +2794,71 @@
     });
   </script>
 
+  <script>
+/* ============ V5 DEPTH ENGINE ============ */
+(function () {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const finePointer  = window.matchMedia('(pointer: fine)').matches;
+
+  /* --- 1. Pointer-tilt cards (lerped) --- */
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll('.focus-card, .team-card, .region-item, .testimonial-card').forEach(card => {
+      let rx = 0, ry = 0, trx = 0, try_ = 0, raf = null;
+      const tick = () => {
+        rx += (trx - rx) * 0.08; ry += (try_ - ry) * 0.08;
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+        if (Math.abs(trx - rx) > 0.01 || Math.abs(try_ - ry) > 0.01) raf = requestAnimationFrame(tick);
+        else raf = null;
+      };
+      const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        try_ = ((e.clientX - r.left) / r.width  - 0.5) *  10;
+        trx  = -((e.clientY - r.top) / r.height - 0.5) * 10;
+        kick();
+      });
+      card.addEventListener('mouseleave', () => { trx = 0; try_ = 0; kick(); });
+    });
+  }
+
+  /* --- 2. Layered scroll parallax (single rAF loop) --- */
+  if (!reduceMotion) {
+    const layers = [...document.querySelectorAll('.parallax-bg')];
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const vh = window.innerHeight;
+      layers.forEach(el => {
+        if (!el.offsetParent) return;
+        const r = el.parentElement.getBoundingClientRect();
+        const speed = parseFloat(el.dataset.parallax || 0.1);
+        const progress = (r.top + r.height / 2 - vh / 2) / vh;
+        el.style.transform = `translateY(${progress * speed * -400}px)`;
+      });
+    };
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  }
+
+  /* --- 3. Hero gem: pointer tilt + scroll rotation (lerped) --- */
+  const gem = document.getElementById('gem3d');
+  if (gem && !reduceMotion) {
+    let tRx = -8, tRy = 0, rx = tRx, ry = 0;
+    const hero = document.querySelector('.hero');
+    hero.addEventListener('mousemove', e => {
+      const r = hero.getBoundingClientRect();
+      tRy = ((e.clientX - r.left) / r.width  - 0.5) * 22;
+      tRx = -8 - ((e.clientY - r.top) / r.height - 0.5) * 14;
+    });
+    hero.addEventListener('mouseleave', () => { tRx = -8; tRy = 0; });
+    (function spin() {
+      const scrollRot = (window.pageYOffset / window.innerHeight) * 70;
+      rx += (tRx - rx) * 0.05; ry += (tRy + scrollRot - ry) * 0.05;
+      gem.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      requestAnimationFrame(spin);
+    })();
+  }
+})();
+  </script>
 </body>
 </html>
