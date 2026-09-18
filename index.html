@@ -2889,54 +2889,20 @@
   }
 })();
 
-/* ============ HERO GEM — CURSOR-DRIVEN CONTINUOUS FLOW ============
-   The gem rotation is scrubbed by cursor X: move right to spin forward,
-   left to reverse. Circular wraparound = no visible loop cut.
-   Idle > 3s: slow ambient drift. Touch devices: normal autoplay loop. */
+/* ============ HERO GEM — AUTONOMOUS SLOW LOOP ============
+   Native hardware-decoded autoplay loop (no lag, no per-frame seeks),
+   slowed to half speed: 12s clip -> calm 24s ambient cycle, which also
+   makes the loop seam virtually imperceptible. */
 (function heroGemFlow() {
   const v = document.querySelector('.hero-video');
   if (!v) return;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer  = window.matchMedia('(pointer: fine)').matches;
-  if (reduceMotion || !finePointer) return; // keep native autoplay loop fallback
-
-  v.removeAttribute('autoplay');
-  v.removeAttribute('loop');
-  v.pause();
-
-  const hero = document.querySelector('.hero');
-  let dur = 0, target = 0, cur = 0, ready = false, lastMove = -4000;
-
-  v.addEventListener('loadedmetadata', () => {
-    dur = v.duration || 0;
-    cur = target = dur * 0.04;
-    ready = dur > 0;
-  });
-
-  hero.addEventListener('mousemove', e => {
-    if (!ready) return;
-    const r = hero.getBoundingClientRect();
-    const x = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
-    target = x * dur;
-    lastMove = performance.now();
-  });
-
-  (function tick() {
-    if (ready) {
-      // idle: drift forward slowly (~75s per full revolution)
-      if (performance.now() - lastMove > 3000) target = (target + dur * 0.00022) % dur;
-      // shortest circular delta so wraparound is seamless
-      let d = target - cur;
-      if (d >  dur / 2) d -= dur;
-      if (d < -dur / 2) d += dur;
-      cur = (cur + d * 0.07 + dur) % dur;
-      // only seek when the drift is perceptible (avoids decoder thrash)
-      if (Math.abs((v.currentTime || 0) - cur) > 0.05) {
-        try { v.currentTime = cur; } catch (e) {}
-      }
-    }
-    requestAnimationFrame(tick);
-  })();
+  const slow = () => {
+    v.playbackRate = 0.5;
+    const p = v.play();
+    if (p && p.catch) p.catch(() => {});
+  };
+  if (v.readyState >= 1) slow();
+  else v.addEventListener('loadedmetadata', slow, { once: true });
 })();
   </script>
 </body>
