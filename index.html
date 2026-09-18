@@ -1451,6 +1451,8 @@
     }
     @media (max-width: 768px) {
       .hero { padding: 7rem 1.5rem 5rem; }
+      .hero h1 { font-size: clamp(1.9rem, 9vw, 2.8rem); line-height: 1.12; }
+      .hero-sub { font-size: 1rem; }
       .testimonials-section, .intro, .credentials-section, .focus-section,
       .process-preview, .team-preview, .canada-service, .gem-section,
       .faq-section, .contact-section, .re-service-section, .team-bios-section { padding: 5rem 1.5rem; }
@@ -2544,19 +2546,28 @@
         lineSpan.style.display = 'block';
         if (lineIdx > 0) lineSpan.style.marginTop = '0.2em';
 
-        const chars = line.split('');
-        chars.forEach((char) => {
-          const span = document.createElement('span');
-          if (char === ' ') {
-            span.className = 'char space';
-            span.innerHTML = '&nbsp;';
-          } else {
+        const words = line.split(' ');
+        words.forEach((word, wIdx) => {
+          const wordSpan = document.createElement('span');
+          wordSpan.style.display = 'inline-block';
+          wordSpan.style.whiteSpace = 'nowrap'; // never break mid-word
+          word.split('').forEach((char) => {
+            const span = document.createElement('span');
             span.className = 'char';
             span.textContent = char;
+            span.style.animationDelay = (delay / 1000 + charIndex * 0.04) + 's';
+            wordSpan.appendChild(span);
+            charIndex++;
+          });
+          lineSpan.appendChild(wordSpan);
+          if (wIdx < words.length - 1) {
+            const space = document.createElement('span');
+            space.className = 'char space';
+            space.innerHTML = '&nbsp;';
+            space.style.animationDelay = (delay / 1000 + charIndex * 0.04) + 's';
+            lineSpan.appendChild(space);
+            charIndex++;
           }
-          span.style.animationDelay = (delay / 1000 + charIndex * 0.04) + 's';
-          lineSpan.appendChild(span);
-          charIndex++;
         });
 
         element.appendChild(lineSpan);
