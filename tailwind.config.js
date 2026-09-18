@@ -4,7 +4,22 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['Fraunces', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
+        obsidian: "#0E0C0B",
+        basalt: "#171412",
+        umber: "#231E1B",
+        "stone-line": "#35302B",
+        ivory: "#F4EFE8",
+        parchment: "#C9BFAF",
+        taupe: "#8C8175",
+        rubellite: "#C9184A",
+        "ruby-deep": "#8E0F36",
+        "ruby-glow": "#FF4D7D",
+        champagne: "#D6B98C",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -4,72 +4,184 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.625rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 20 8% 5%;
+    --foreground: 36 26% 93%;
+    --card: 24 10% 8%;
+    --card-foreground: 36 26% 93%;
+    --popover: 24 10% 8%;
+    --popover-foreground: 36 26% 93%;
+    --primary: 343 81% 44%;
+    --primary-foreground: 36 26% 93%;
+    --secondary: 25 14% 12%;
+    --secondary-foreground: 36 26% 93%;
+    --muted: 25 14% 12%;
+    --muted-foreground: 30 9% 50%;
+    --accent: 343 81% 44%;
+    --accent-foreground: 36 26% 93%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 30 8% 19%;
+    --input: 30 8% 19%;
+    --ring: 343 81% 44%;
+    --radius: 1rem;
+    --sidebar-background: 24 10% 8%;
+    --sidebar-foreground: 36 26% 93%;
+    --sidebar-primary: 343 81% 44%;
+    --sidebar-primary-foreground: 36 26% 93%;
+    --sidebar-accent: 25 14% 12%;
+    --sidebar-accent-foreground: 36 26% 93%;
+    --sidebar-border: 30 8% 19%;
+    --sidebar-ring: 343 81% 44%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
+
+  html {
+    scroll-behavior: auto;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-obsidian text-ivory font-sans antialiased;
+    font-feature-settings: "ss01";
+  }
+
+  ::selection {
+    background: rgba(201, 24, 74, 0.45);
+    color: #f4efe8;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0e0c0b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #35302b;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8e0f36;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    body.custom-cursor-active,
+    body.custom-cursor-active a,
+    body.custom-cursor-active button,
+    body.custom-cursor-active [role="button"] {
+      cursor: none;
+    }
+  }
+}
+
+@layer components {
+  .container-rw {
+    @apply mx-auto w-full max-w-[1200px] px-6 md:px-10;
+  }
+
+  .gem-text {
+    background: linear-gradient(135deg, #8e0f36 0%, #c9184a 45%, #ff4d7d 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .vault-gradient {
+    background: radial-gradient(
+      1200px 600px at 70% -10%,
+      rgba(201, 24, 74, 0.1),
+      transparent 60%
+    );
+  }
+
+  .facet-sheen {
+    background: linear-gradient(160deg, rgba(244, 239, 232, 0.04), transparent 40%);
+  }
+
+  .eyebrow {
+    @apply font-sans font-semibold uppercase text-champagne;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+  }
+
+  .hairline-champagne {
+    background: rgba(214, 185, 140, 0.35);
+    height: 1px;
+  }
+
+  .facet-notch {
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-sans text-sm font-medium text-ivory transition-all duration-300;
+    background: linear-gradient(135deg, #8e0f36 0%, #c9184a 45%, #ff4d7d 100%);
+    background-size: 150% 150%;
+    background-position: 0% 50%;
+  }
+  .btn-primary:hover {
+    background-position: 90% 50%;
+    box-shadow: 0 8px 32px rgba(201, 24, 74, 0.35);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-full border border-stone-line px-7 py-3.5 font-sans text-sm font-medium text-ivory transition-all duration-300;
+  }
+  .btn-ghost:hover {
+    border-color: rgba(201, 24, 74, 0.6);
+    color: #ff4d7d;
+  }
+
+  .link-arrow {
+    @apply inline-flex items-center gap-2 font-sans text-sm font-medium text-rubellite transition-colors duration-300;
+  }
+  .link-arrow:hover {
+    color: #ff4d7d;
+  }
+  .link-arrow svg {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-arrow:hover svg {
+    transform: translateX(4px);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Split-text mask helpers (used by src/lib/split.ts) */
+.sw-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.sw-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
