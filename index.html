@@ -1313,6 +1313,16 @@
       color: var(--dark-1);
       opacity: 0.7;
     }
+    .form-error {
+      display: none;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #8a4a3a;
+    }
+    .form-error.visible { display: block; }
+    .form-error a { color: inherit; text-decoration: underline; }
+    .form-submit[disabled] { opacity: 0.6; cursor: wait; }
     .form-success {
       display: none;
       text-align: center;
@@ -1869,8 +1879,11 @@
           <label>How can we help?</label>
           <textarea name="message" placeholder="Tell us a bit about where you are today or what you're looking to achieve..."></textarea>
         </div>
-        <button type="submit" class="btn btn-filled form-submit">Submit Request</button>
+        <button type="submit" class="btn btn-filled form-submit" id="modalSubmitBtn">Submit Request</button>
+        <p class="form-error" id="modalError" role="alert">Something went wrong sending your request. Please email us directly at <a href="mailto:info@rubellitewealth.com">info@rubellitewealth.com</a>.</p>
         <p class="form-privacy">Your information is 100% confidential and will never be shared.</p>
+        <!-- Honeypot: invisible to humans, catches spam bots -->
+        <div style="display:none" aria-hidden="true"><input type="text" name="_honey" tabindex="-1" autocomplete="off"></div>
       </form>
       <div class="form-success" id="modalSuccess">
         <div class="success-icon">
@@ -2655,6 +2668,7 @@
       setTimeout(() => {
         modalForm.style.display = 'block';
         modalSuccess.classList.remove('visible');
+        modalError.classList.remove('visible');
         modalForm.reset();
       }, 400);
     }
@@ -2674,10 +2688,54 @@
       }
     });
 
-    modalForm.addEventListener('submit', (e) => {
+    const modalSubmitBtn = document.getElementById('modalSubmitBtn');
+    const modalError = document.getElementById('modalError');
+
+    modalForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      modalForm.style.display = 'none';
-      modalSuccess.classList.add('visible');
+      modalError.classList.remove('visible');
+      modalSubmitBtn.disabled = true;
+      modalSubmitBtn.textContent = 'Sending…';
+
+      const data = new FormData(modalForm);
+      const focusSelect = modalForm.querySelector('select[name="focus"]');
+      const focusLabel = focusSelect && focusSelect.selectedIndex > 0
+        ? focusSelect.options[focusSelect.selectedIndex].text
+        : 'Not specified';
+
+      const payload = {
+        _subject: 'New Consultation Request — rubellitewealth.com',
+        _template: 'table',
+        _replyto: data.get('email'),
+        _captcha: 'false',
+        _honey: data.get('_honey') || '',
+        name: data.get('name'),
+        email: data.get('email'),
+        phone: data.get('phone') || 'Not provided',
+        focus: focusLabel,
+        message: data.get('message') || '(No message provided)'
+      };
+
+      try {
+        const res = await fetch('https://formsubmit.co/ajax/info@rubellitewealth.com', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('Bad response');
+        const json = await res.json();
+        if (json.success === 'true' || json.success === true) {
+          modalForm.style.display = 'none';
+          modalSuccess.classList.add('visible');
+        } else {
+          throw new Error(json.message || 'Submission failed');
+        }
+      } catch (err) {
+        modalError.classList.add('visible');
+      } finally {
+        modalSubmitBtn.disabled = false;
+        modalSubmitBtn.textContent = 'Submit Request';
+      }
     });
 
     // ============================================
