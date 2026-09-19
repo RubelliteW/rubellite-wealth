@@ -118,75 +118,6 @@
       100% { left: 100%; }
     }
 
-    /* Entry gate (immersive-g.com pattern): the loader holds until the
-       visitor chooses sound or silent entry — never auto-hides. */
-    .loader-gate {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.15rem;
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 0.9s var(--transition-smooth);
-    }
-    .loader-gate.visible { opacity: 1; }
-    .loader-gate[hidden] { display: none; }
-    .gate-option {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: var(--font-body);
-      -webkit-font-smoothing: antialiased;
-    }
-    .gate-sound {
-      font-family: var(--font-display);
-      font-size: 0.9rem;
-      font-weight: 400;
-      color: var(--bright-2);
-      text-transform: uppercase;
-      letter-spacing: 0.5em;
-      padding: 0.75rem 0.5rem 0.75rem 1rem; /* optical: trailing space offsets letter-spacing */
-      animation: gateBreath 2.8s ease-in-out infinite;
-      transition: color 0.3s ease, text-shadow 0.3s ease;
-    }
-    .gate-sound:hover { text-shadow: 0 0 22px rgba(184, 160, 136, 0.45); }
-    .gate-sound.gate-primary {
-      text-shadow: 0 0 18px rgba(184, 160, 136, 0.35);
-      animation-duration: 1.9s; /* returning "on" visitors: more prominent pulse */
-    }
-    @keyframes gateBreath {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
-    .gate-silent {
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: rgba(247, 245, 240, 0.42);
-      padding: 0.35rem 0.2rem;
-      border-bottom: 1px solid transparent;
-      transition: color 0.3s ease, border-color 0.3s ease;
-    }
-    .gate-silent:hover { color: var(--bright-2); border-bottom-color: rgba(184, 160, 136, 0.4); }
-    .gate-silent.gate-primary {
-      color: rgba(247, 245, 240, 0.78);
-      border-bottom-color: rgba(184, 160, 136, 0.35);
-    }
-    .gate-option:focus-visible {
-      outline: 1px solid var(--bright-2);
-      outline-offset: 5px;
-      opacity: 1;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .gate-sound { animation: none; opacity: 1; }
-      .loader-gate { transition: none; }
-    }
-    @media (max-width: 768px) {
-      .gate-sound { font-size: 0.78rem; letter-spacing: 0.38em; }
-    }
-
     /* Custom Cursor */
     .cursor {
       position: fixed;
@@ -1937,37 +1868,39 @@
   opacity: 0.85;
 }
 
-/* Hero triad line — fades/slides in after the H1 char reveal completes */
-.hero-triad {
+/* Hero lexicon card — the gemstone definition as a refined badge/card */
+.lexicon-card {
+  max-width: 560px;
+  margin: 0 auto 2.75rem;
+  padding: 2rem 2.5rem 2.25rem;
+  border: 1px solid rgba(184, 160, 136, 0.45);
+  background: rgba(43, 35, 29, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  text-align: center;
+}
+.lexicon-gem {
+  width: 18px;
+  height: 18px;
   display: block;
+  margin: 0 auto 0.9rem;
+}
+.lexicon-card .hero-tease { margin: 0; max-width: none; }
+@media (max-width: 768px) {
+  .lexicon-card { padding: 1.5rem 1.5rem 1.75rem; margin-bottom: 2.25rem; }
+}
+
+/* Stat band triad sub-line (relocated from the hero) */
+.stat-band-triad {
   font-family: var(--font-display);
   font-style: italic;
-  font-weight: 400;
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 300;
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
   letter-spacing: 0.14em;
-  color: var(--bright-2); /* #B8A088 */
-  margin: -0.25rem auto 2.25rem;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 1.1s var(--transition-smooth), transform 1.1s var(--transition-smooth);
-}
-.hero-triad::before, .hero-triad::after {
-  content: '';
-  display: inline-block;
-  width: 44px;
-  height: 1px;
-  background: var(--bright-2);
-  vertical-align: middle;
-  margin: 0 1.1rem;
-  opacity: 0.55;
-}
-.hero-triad.visible { opacity: 1; transform: translateY(0); }
-@media (prefers-reduced-motion: reduce) {
-  .hero-triad { transform: none; }
-}
-@media (max-width: 768px) {
-  .hero-triad { letter-spacing: 0.1em; margin-bottom: 1.75rem; }
-  .hero-triad::before, .hero-triad::after { width: 24px; margin: 0 0.7rem; }
+  color: rgba(184, 160, 136, 0.75);
+  text-align: center;
+  margin: 0 0 3rem;
 }
 
 /* Per-word re-flash used to sync the opt-in sound experience */
@@ -1980,14 +1913,21 @@
   .cinematic-text .word.word-flash { animation: none; }
 }
 
-/* Hero sound toggle (opt-in, default muted) */
-.sound-toggle {
+/* Hero sound control: toggle + "click for sound" hint (opt-in, default muted) */
+.sound-control {
   position: absolute;
   left: 2.5rem;
   bottom: 2.4rem;
   z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.sound-toggle {
+  position: relative;
   width: 46px;
   height: 46px;
+  flex: 0 0 auto;
   border-radius: 50%;
   border: 1px solid rgba(184, 160, 136, 0.55);
   background: rgba(43, 35, 29, 0.35);
@@ -2000,6 +1940,21 @@
   cursor: pointer;
   opacity: 0.75;
   transition: opacity 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.sound-hint {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(184, 160, 136, 0.75);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.6s ease;
+}
+.sound-control.on .sound-hint { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .sound-hint { transition: none; }
 }
 .sound-toggle:hover {
   opacity: 1;
@@ -2017,7 +1972,9 @@
 .sound-toggle.on .st-waves { display: block; }
 .sound-toggle.on .st-slash { display: none; }
 @media (max-width: 768px) {
-  .sound-toggle { left: 1.25rem; bottom: 1.5rem; width: 42px; height: 42px; }
+  .sound-control { left: 1.25rem; bottom: 1.5rem; gap: 0.7rem; }
+  .sound-toggle { width: 42px; height: 42px; }
+  .sound-hint { font-size: 0.55rem; letter-spacing: 0.22em; }
 }
 
 /* Stat band */
@@ -2034,7 +1991,7 @@
   letter-spacing: 0.06em;
   color: var(--bright-2);
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 0.9rem;
 }
 .stat-band-grid {
   display: grid;
@@ -2390,35 +2347,31 @@
 .quiz-result .btn-filled { margin-top: 1.5rem; }
 .quiz-restart { display: block; }
 
-/* Footer CTA band */
-.footer-cta { padding: 6rem 4rem; background: var(--light-2); }
-.footer-cta-inner {
-  max-width: 1300px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3rem;
-  flex-wrap: wrap;
-}
-.footer-cta h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  font-weight: 300;
+/* Bronze primary CTAs on cream sections (contrast fix: light bronze fill,
+   dark text, slightly darker bronze hover) */
+.contact-section .btn-filled,
+.form-submit.btn-filled {
+  background: var(--bright-2);
+  border-color: var(--bright-2);
   color: var(--darkest);
 }
-.footer-cta p { color: var(--dark-1); margin-top: 0.75rem; font-size: 1rem; }
+.contact-section .btn-filled::before,
+.form-submit.btn-filled::before { background: #A98F74; }
+.contact-section .btn-filled:hover,
+.form-submit.btn-filled:hover {
+  color: var(--darkest);
+  border-color: #A98F74;
+}
 
 /* V6 responsive + motion guardrails */
 @media (max-width: 768px) {
   .stat-band { padding: 3.5rem 1.5rem; }
-  .serve-section, .assessment-section, .footer-cta { padding: 5rem 1.5rem; }
+  .serve-section, .assessment-section { padding: 5rem 1.5rem; }
   .stat-band-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .stat-item + .stat-item::before { display: none; }
   .quiz { padding: 2rem 1.5rem; }
   .quiz-answers { grid-template-columns: 1fr; }
   .quiz-progress { gap: 1rem; }
-  .footer-cta-inner { flex-direction: column; text-align: center; align-items: center; }
   .concierge-actions .btn { width: 100%; max-width: 280px; }
   .concierge-line { margin-top: -0.75rem; }
 }
@@ -2450,10 +2403,6 @@
     </svg>
     <div class="loader-logo">Rubellite Wealth</div>
     <div class="loader-bar"></div>
-    <div class="loader-gate" id="loaderGate" hidden>
-      <button class="gate-option gate-sound" id="gateSound" type="button">Click to enable sound</button>
-      <button class="gate-option gate-silent" id="gateSilent" type="button">Enter silently</button>
-    </div>
   </div>
 
   <!-- Custom Cursor -->
@@ -2568,21 +2517,34 @@
       <div class="hero-content">
         <span class="eyebrow reveal">Corporate Estate, Succession & Real Estate Planning</span>
         <h1 class="reveal reveal-delay-1" id="heroHeadline">Securing Legacy.<br>Structuring Wealth.</h1>
-        <p class="hero-triad" id="heroTriad">Structure. Stewardship. Succession.</p>
-        <p class="hero-sub reveal reveal-delay-2">Three disciplines, one advisory. Rubellite aligns your corporation, your estate, and your real property under a single, coherent strategy — so that what you have built holds its shape long after the building is done.</p>
-        <p class="hero-tease hero-definition reveal reveal-delay-3"><span class="def-word">Rubellite</span> <span class="def-phon">[ru&#8209;bel&#8209;ite]</span> <em class="def-pos">noun</em> &mdash; A rare gemstone defined by vivid clarity and structural resilience. The benchmark for enduring wealth design.</p>
+        <p class="hero-sub reveal reveal-delay-2">Three disciplines, one advisory. Rubellite aligns your corporation, your estate, and your real property under a single blueprint—ensuring that what you and your family have built, stands resilient across generations.</p>
+        <div class="lexicon-card reveal reveal-delay-3">
+          <svg class="lexicon-gem" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <polygon points="100,4 182,50 182,150 100,196 18,150 18,50" fill="none" stroke="#B8A088" stroke-width="6"/>
+            <polygon points="100,30 158,64 158,136 100,170 42,136 42,64" fill="none" stroke="#B8A088" stroke-width="3.2" opacity="0.5"/>
+            <polygon points="100,55 135,76 135,124 100,145 65,124 65,76" fill="none" stroke="#B8A088" stroke-width="2" opacity="0.3"/>
+            <circle cx="100" cy="100" r="8" fill="#B8A088" opacity="0.4"/>
+          </svg>
+          <p class="hero-tease hero-definition"><span class="def-word">Rubellite</span> <span class="def-phon">[ru&#8209;bel&#8209;ite]</span> <em class="def-pos">noun</em> &mdash; A rare gemstone defined by vivid clarity and structural resilience. The benchmark for enduring wealth design.</p>
+        </div>
+        <div class="hero-actions reveal reveal-delay-4">
+          <button class="btn btn-filled open-modal" type="button">Connect With Our Team</button>
+          <a href="#team" class="btn">Meet The Leadership</a>
+        </div>
       </div>
-      <noscript><style>.hero-triad{opacity:1;transform:none}</style></noscript>
-      <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false" aria-label="Enable sound" title="Sound">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
-          <path d="M11 5 6.5 9H3v6h3.5L11 19V5z"/>
-          <g class="st-waves">
-            <path d="M15 9.5a4 4 0 0 1 0 5"/>
-            <path d="M17.5 7a8 8 0 0 1 0 10"/>
-          </g>
-          <line class="st-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/>
-        </svg>
-      </button>
+      <div class="sound-control" id="soundControl">
+        <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false" aria-label="Enable sound" title="Sound">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
+            <path d="M11 5 6.5 9H3v6h3.5L11 19V5z"/>
+            <g class="st-waves">
+              <path d="M15 9.5a4 4 0 0 1 0 5"/>
+              <path d="M17.5 7a8 8 0 0 1 0 10"/>
+            </g>
+            <line class="st-slash" x1="4.5" y1="19.5" x2="19.5" y2="4.5"/>
+          </svg>
+        </button>
+        <span class="sound-hint" id="soundHint" aria-hidden="true">Click for sound</span>
+      </div>
       <div class="hero-scroll" aria-hidden="true">
         <span class="scroll-line"></span>
         <span>Scroll</span>
@@ -2593,6 +2555,7 @@
     <section class="stat-band" aria-label="Rubellite at a glance">
       <div class="stat-band-inner">
         <p class="stat-band-heading reveal">Two Principals. Three Disciplines. Every File.</p>
+        <p class="stat-band-triad reveal reveal-delay-1">Structure. Stewardship. Succession.</p>
         <div class="stat-band-grid">
           <div class="stat-item reveal reveal-delay-1">
             <span class="stat-num">2</span>
@@ -2639,7 +2602,7 @@
     <section class="intro" id="philosophy" aria-labelledby="intro-heading">
       <div class="intro-grid">
         <div class="intro-media media-frame kenburns parallax-bg" data-parallax="0.08">
-          <img src="assets/img/philosophy-ambience.jpg" alt="Warm light across a boardroom table during an estate planning session"
+          <img src="assets/img/philosophy-ambience.jpg" alt="A quiet Rubellite meeting room — marble table, soft daylight, space for unhurried conversation"
                onerror="this.parentNode.style.display='none'">
         </div>
         <div class="intro-left">
@@ -3123,17 +3086,6 @@
     </section>
   </main>
 
-  <!-- Footer CTA Band (no dead ends) -->
-  <section class="footer-cta" aria-label="Start a conversation with Rubellite">
-    <div class="footer-cta-inner">
-      <div>
-        <h2 class="reveal">Start a <em>conversation</em> with Rubellite.</h2>
-        <p class="reveal reveal-delay-1">Two principals. Three disciplines. Every file.</p>
-      </div>
-      <button class="btn btn-filled open-modal reveal reveal-delay-2">Request a Private Consultation</button>
-    </div>
-  </section>
-
   <footer class="site-footer">
     <div>
       <p>&copy; 2026 Rubellite Wealth Management. All rights reserved.</p>
@@ -3158,55 +3110,25 @@
   <script>
 
     // ============================================
-    // PAGE LOADER → ENTRY GATE
+    // PAGE LOADER
     // ============================================
     // After window load the loading bar completes (~1.8s), then the loader
-    // transitions into an ENTRY GATE: the visitor chooses "Click to enable
-    // sound" or "Enter silently". The loader never auto-hides — it waits for
-    // the choice (the gate click doubles as the audio-unlock gesture). On
-    // either choice the loader fades out (1.2s CSS transition) and the hero
-    // headline char reveal starts as the fade begins, exactly as before.
+    // fades out (1.2s CSS transition) and the hero headline char reveal
+    // starts as the fade begins. No prompt, no waiting — the reveal always
+    // runs silently; sound is opt-in via the hero click or the toggle.
     const LOADER_HOLD_MS = 1800;
     const pageLoader = document.getElementById('pageLoader');
-    const loaderGate = document.getElementById('loaderGate');
-    const gateSoundBtn = document.getElementById('gateSound');
-    const gateSilentBtn = document.getElementById('gateSilent');
     let siteEntered = false;
 
-    function showEntryGate() {
-      if (siteEntered || !loaderGate) return;
-      // Pre-highlight the option matching the visitor's last choice.
-      let lastChoice = null;
-      try { lastChoice = localStorage.getItem('rubellite-sound'); } catch (e) {}
-      if (lastChoice === 'on') gateSoundBtn.classList.add('gate-primary');
-      else if (lastChoice === 'off') gateSilentBtn.classList.add('gate-primary');
-      loaderGate.hidden = false;
-      requestAnimationFrame(() => loaderGate.classList.add('visible'));
-      // Move focus into the gate for keyboard users (Enter/Space activates).
-      const primary = lastChoice === 'off' ? gateSilentBtn : gateSoundBtn;
-      try { primary.focus({ preventScroll: true }); } catch (e) { primary.focus(); }
-    }
-
-    function enterSite(withSound) {
+    function enterSite() {
       if (siteEntered) return;
       siteEntered = true;
-      setSound(withSound);
       pageLoader.classList.add('hidden');
       startHeroSequence();
-      if (withSound) startHeroSoundscape(250); // 250ms = reveal start offset
     }
 
-    if (gateSoundBtn) gateSoundBtn.addEventListener('click', () => enterSite(true));
-    if (gateSilentBtn) gateSilentBtn.addEventListener('click', () => enterSite(false));
-    // Escape = enter silently (only while the gate is up).
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !siteEntered && loaderGate && loaderGate.classList.contains('visible')) {
-        enterSite(false);
-      }
-    });
-
     window.addEventListener('load', () => {
-      setTimeout(showEntryGate, LOADER_HOLD_MS);
+      setTimeout(enterSite, LOADER_HOLD_MS);
     });
 
     // ============================================
@@ -3418,15 +3340,6 @@
 
         element.appendChild(lineSpan);
       });
-
-      // Triad line fades/slides in once the final character has landed,
-      // completing the staggered cinematic sequence.
-      const triad = document.getElementById('heroTriad');
-      if (triad) {
-        setTimeout(() => {
-          triad.classList.add('visible');
-        }, delay + charIndex * 40 + 450);
-      }
     }
 
     // Starts the hero reveal; called the moment the loader begins hiding.
@@ -3443,14 +3356,17 @@
     }
 
     // ============================================
-    // SOUND SYSTEM (entry gate + persistent toggle)
+    // SOUND SYSTEM (hero-click unmute + persistent toggle)
     // ============================================
     // Audio design: a warm ambient loop under the whole visit, plus one
-    // camera-shutter click per H1 word as each word pops during the reveal.
-    // All playback is gesture-gated (entry gate click or toggle click) and
-    // every play() promise is caught — audio must fail silently.
+    // camera-shutter click per H1 word as each word pops. MUTED BY DEFAULT —
+    // the reveal always runs silently and nothing autoplays on load, even
+    // for returning "on" visitors. Sound is enabled by the first click
+    // anywhere on the hero section, or via the toggle. Every play() promise
+    // is caught — audio must fail silently.
     const SOUND_KEY = 'rubellite-sound';
     const soundToggle = document.getElementById('soundToggle');
+    const soundControl = document.getElementById('soundControl');
     const reducedMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
     const AMBIENT_VOLUME = 0.18;
     const AMBIENT_FADE_IN_MS = 2000;
@@ -3458,8 +3374,8 @@
     const CLICK_VOLUME = 0.45;
     let soundOn = false;
 
-    // Constructing Audio() at parse time preloads both files so the gate
-    // click has zero lag.
+    // Constructing Audio() at parse time preloads both files so the first
+    // unmute gesture has zero lag.
     const ambientAudio = new Audio('assets/audio/ambient-loop.mp3');
     ambientAudio.preload = 'auto';
     ambientAudio.loop = true;
@@ -3557,6 +3473,7 @@
         soundToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
         soundToggle.setAttribute('aria-label', on ? 'Mute sound' : 'Enable sound');
       }
+      if (soundControl) soundControl.classList.toggle('on', on); // fades the hint out
       if (!on) {
         cancelWordClicks();
         fadeOutAmbient();
@@ -3572,6 +3489,21 @@
           // synced with a gentle per-word re-flash of the headline.
           startHeroSoundscape(0);
         }
+      });
+    }
+
+    // First click anywhere on the hero section (buttons included — their own
+    // handlers still run) enables sound: ambient fade-in + one replay of the
+    // 4-word shutter-pop sequence. Fires at most once per page load.
+    const heroSection = document.querySelector('.hero');
+    let heroUnmuteDone = false;
+    if (heroSection) {
+      heroSection.addEventListener('click', () => {
+        if (heroUnmuteDone) return;
+        heroUnmuteDone = true;
+        if (soundOn) return; // already on (e.g. via the toggle) — don't replay
+        setSound(true);
+        startHeroSoundscape(0);
       });
     }
 
