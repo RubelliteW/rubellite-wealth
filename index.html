@@ -2141,10 +2141,11 @@
   color: var(--dark-2);
   margin-bottom: 0.85rem;
 }
-.pillar-services { list-style: none; margin: 0.25rem 0 1.25rem; }
+.pillar-services { list-style: none; margin: 0.25rem 0 1.25rem; padding-left: 0.85rem; }
 .pillar-services li {
   position: relative;
   font-size: 0.85rem;
+  font-style: italic;
   color: var(--dark-1);
   line-height: 1.5;
   padding: 0.3rem 0 0.3rem 1.15rem;
@@ -2152,8 +2153,9 @@
 .pillar-services li::before {
   content: '';
   position: absolute;
-  left: 0; top: 0.85rem;
-  width: 8px; height: 1px;
+  left: 0; top: 0.72rem;
+  width: 5px; height: 5px;
+  border-radius: 50%;
   background: var(--bright-2);
 }
 .pillar-payoff {
@@ -2250,7 +2252,7 @@
 }
 .quiz .btn-filled {
   border-color: var(--bright-2);
-  color: var(--darkest);
+  color: var(--cream);
 }
 .quiz-progress {
   display: flex;
@@ -2569,16 +2571,16 @@
     <!-- Stat Band (proof before any pitch) -->
     <section class="stat-band" aria-label="Rubellite at a glance">
       <div class="stat-band-inner">
-        <p class="stat-band-heading reveal">Two Principals. Three Disciplines. Every File.</p>
+        <p class="stat-band-heading reveal">Three Disciplines. Two Principals. One Plan.</p>
         <p class="stat-band-triad reveal reveal-delay-1">Structure. Stewardship. Succession.</p>
         <div class="stat-band-grid">
           <div class="stat-item reveal reveal-delay-1">
-            <span class="stat-num">2</span>
-            <span class="stat-caption">Founding principals, personally on every engagement</span>
-          </div>
-          <div class="stat-item reveal reveal-delay-2">
             <span class="stat-num">3</span>
             <span class="stat-caption">Disciplines under one advisory — corporate estate, succession, real property</span>
+          </div>
+          <div class="stat-item reveal reveal-delay-2">
+            <span class="stat-num">2</span>
+            <span class="stat-caption">Founding principals, personally on every engagement</span>
           </div>
           <div class="stat-item reveal reveal-delay-3">
             <span class="stat-num">1</span>
