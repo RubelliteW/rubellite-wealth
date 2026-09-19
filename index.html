@@ -118,6 +118,75 @@
       100% { left: 100%; }
     }
 
+    /* Entry gate (immersive-g.com pattern): the loader holds until the
+       visitor chooses sound or silent entry — never auto-hides. */
+    .loader-gate {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.15rem;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.9s var(--transition-smooth);
+    }
+    .loader-gate.visible { opacity: 1; }
+    .loader-gate[hidden] { display: none; }
+    .gate-option {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+    .gate-sound {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--bright-2);
+      text-transform: uppercase;
+      letter-spacing: 0.5em;
+      padding: 0.75rem 0.5rem 0.75rem 1rem; /* optical: trailing space offsets letter-spacing */
+      animation: gateBreath 2.8s ease-in-out infinite;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+    .gate-sound:hover { text-shadow: 0 0 22px rgba(184, 160, 136, 0.45); }
+    .gate-sound.gate-primary {
+      text-shadow: 0 0 18px rgba(184, 160, 136, 0.35);
+      animation-duration: 1.9s; /* returning "on" visitors: more prominent pulse */
+    }
+    @keyframes gateBreath {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    .gate-silent {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(247, 245, 240, 0.42);
+      padding: 0.35rem 0.2rem;
+      border-bottom: 1px solid transparent;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    .gate-silent:hover { color: var(--bright-2); border-bottom-color: rgba(184, 160, 136, 0.4); }
+    .gate-silent.gate-primary {
+      color: rgba(247, 245, 240, 0.78);
+      border-bottom-color: rgba(184, 160, 136, 0.35);
+    }
+    .gate-option:focus-visible {
+      outline: 1px solid var(--bright-2);
+      outline-offset: 5px;
+      opacity: 1;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gate-sound { animation: none; opacity: 1; }
+      .loader-gate { transition: none; }
+    }
+    @media (max-width: 768px) {
+      .gate-sound { font-size: 0.78rem; letter-spacing: 0.38em; }
+    }
+
     /* Custom Cursor */
     .cursor {
       position: fixed;
@@ -2381,6 +2450,10 @@
     </svg>
     <div class="loader-logo">Rubellite Wealth</div>
     <div class="loader-bar"></div>
+    <div class="loader-gate" id="loaderGate" hidden>
+      <button class="gate-option gate-sound" id="gateSound" type="button">Click to enable sound</button>
+      <button class="gate-option gate-silent" id="gateSilent" type="button">Enter silently</button>
+    </div>
   </div>
 
   <!-- Custom Cursor -->
@@ -2500,7 +2573,7 @@
         <p class="hero-tease hero-definition reveal reveal-delay-3"><span class="def-word">Rubellite</span> <span class="def-phon">[ru&#8209;bel&#8209;ite]</span> <em class="def-pos">noun</em> &mdash; A rare gemstone defined by vivid clarity and structural resilience. The benchmark for enduring wealth design.</p>
       </div>
       <noscript><style>.hero-triad{opacity:1;transform:none}</style></noscript>
-      <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false" aria-label="Enable hero sound" title="Hero sound">
+      <button class="sound-toggle" id="soundToggle" type="button" aria-pressed="false" aria-label="Enable sound" title="Sound">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
           <path d="M11 5 6.5 9H3v6h3.5L11 19V5z"/>
           <g class="st-waves">
@@ -3085,19 +3158,55 @@
   <script>
 
     // ============================================
-    // PAGE LOADER
+    // PAGE LOADER → ENTRY GATE
     // ============================================
-    // Loader holds for 1.8s after window load, then fades out (1.2s CSS
-    // transition). The hero headline char reveal starts as the fade begins,
-    // so the words "pop" cinematically the moment the page is revealed.
+    // After window load the loading bar completes (~1.8s), then the loader
+    // transitions into an ENTRY GATE: the visitor chooses "Click to enable
+    // sound" or "Enter silently". The loader never auto-hides — it waits for
+    // the choice (the gate click doubles as the audio-unlock gesture). On
+    // either choice the loader fades out (1.2s CSS transition) and the hero
+    // headline char reveal starts as the fade begins, exactly as before.
     const LOADER_HOLD_MS = 1800;
-    function hideLoaderAndReveal() {
-      document.getElementById('pageLoader').classList.add('hidden');
-      startHeroSequence();
-      queueHeroSoundGesture();
+    const pageLoader = document.getElementById('pageLoader');
+    const loaderGate = document.getElementById('loaderGate');
+    const gateSoundBtn = document.getElementById('gateSound');
+    const gateSilentBtn = document.getElementById('gateSilent');
+    let siteEntered = false;
+
+    function showEntryGate() {
+      if (siteEntered || !loaderGate) return;
+      // Pre-highlight the option matching the visitor's last choice.
+      let lastChoice = null;
+      try { lastChoice = localStorage.getItem('rubellite-sound'); } catch (e) {}
+      if (lastChoice === 'on') gateSoundBtn.classList.add('gate-primary');
+      else if (lastChoice === 'off') gateSilentBtn.classList.add('gate-primary');
+      loaderGate.hidden = false;
+      requestAnimationFrame(() => loaderGate.classList.add('visible'));
+      // Move focus into the gate for keyboard users (Enter/Space activates).
+      const primary = lastChoice === 'off' ? gateSilentBtn : gateSoundBtn;
+      try { primary.focus({ preventScroll: true }); } catch (e) { primary.focus(); }
     }
+
+    function enterSite(withSound) {
+      if (siteEntered) return;
+      siteEntered = true;
+      setSound(withSound);
+      pageLoader.classList.add('hidden');
+      startHeroSequence();
+      if (withSound) startHeroSoundscape(250); // 250ms = reveal start offset
+    }
+
+    if (gateSoundBtn) gateSoundBtn.addEventListener('click', () => enterSite(true));
+    if (gateSilentBtn) gateSilentBtn.addEventListener('click', () => enterSite(false));
+    // Escape = enter silently (only while the gate is up).
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !siteEntered && loaderGate && loaderGate.classList.contains('visible')) {
+        enterSite(false);
+      }
+    });
+
     window.addEventListener('load', () => {
-      setTimeout(hideLoaderAndReveal, LOADER_HOLD_MS);
+      setTimeout(showEntryGate, LOADER_HOLD_MS);
     });
 
     // ============================================
@@ -3261,33 +3370,8 @@
     });
 
     // ============================================
-    // CINEMATIC TEXT REVEAL WITH AUDIO
+    // CINEMATIC TEXT REVEAL
     // ============================================
-    let audioCtx = null;
-
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-    }
-
-    function playSnippetSound() {
-      if (!audioCtx) return;
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.02);
-        gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-        osc.start(audioCtx.currentTime);
-        osc.stop(audioCtx.currentTime + 0.05);
-      } catch(e) {}
-    }
-
     // Word spans of the hero headline + their reveal offset (ms from reveal
     // start), used to sync the opt-in sound experience per word.
     let heroWords = [];
@@ -3335,19 +3419,6 @@
         element.appendChild(lineSpan);
       });
 
-      setTimeout(() => {
-        initAudio();
-        playSnippetSound();
-      }, delay);
-
-      for (let i = 1; i < charIndex; i += 8) {
-        setTimeout(() => {
-          if (audioCtx && Math.random() > 0.6) {
-            playSnippetSound();
-          }
-        }, delay + i * 40);
-      }
-
       // Triad line fades/slides in once the final character has landed,
       // completing the staggered cinematic sequence.
       const triad = document.getElementById('heroTriad');
@@ -3371,24 +3442,34 @@
       }
     }
 
-    document.addEventListener('click', initAudio, { once: true });
-    document.addEventListener('touchstart', initAudio, { once: true });
-
     // ============================================
-    // HERO SOUND TOGGLE (opt-in, persisted)
+    // SOUND SYSTEM (entry gate + persistent toggle)
     // ============================================
+    // Audio design: a warm ambient loop under the whole visit, plus one
+    // camera-shutter click per H1 word as each word pops during the reveal.
+    // All playback is gesture-gated (entry gate click or toggle click) and
+    // every play() promise is caught — audio must fail silently.
     const SOUND_KEY = 'rubellite-sound';
     const soundToggle = document.getElementById('soundToggle');
     const reducedMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const AMBIENT_VOLUME = 0.18;
+    const AMBIENT_FADE_IN_MS = 2000;
+    const AMBIENT_FADE_OUT_MS = 800;
+    const CLICK_VOLUME = 0.45;
     let soundOn = false;
-    let heroSoundPlayed = false; // gesture-queued playback: once per page load
 
-    const chimeAudio = new Audio('assets/audio/hero-chime.mp3');
-    chimeAudio.preload = 'auto';
-    chimeAudio.volume = 0.5;
-    const tickAudio = new Audio('assets/audio/word-tick.mp3');
-    tickAudio.preload = 'auto';
-    tickAudio.volume = 0.25;
+    // Constructing Audio() at parse time preloads both files so the gate
+    // click has zero lag.
+    const ambientAudio = new Audio('assets/audio/ambient-loop.mp3');
+    ambientAudio.preload = 'auto';
+    ambientAudio.loop = true;
+    ambientAudio.volume = 0;
+    const clickAudio = new Audio('assets/audio/shutter-click.mp3');
+    clickAudio.preload = 'auto';
+
+    let clickTimeouts = [];
+    let ambientFadeRaf = null;
+    let ambientPausedByVisibility = false;
 
     function safePlay(audio, volume) {
       try {
@@ -3399,10 +3480,42 @@
       } catch (e) { /* audio must fail silently */ }
     }
 
-    function stopHeroSounds() {
-      [chimeAudio, tickAudio].forEach(a => {
-        try { a.pause(); a.currentTime = 0; } catch (e) {}
+    // Simple rAF volume ramp (no Web Audio graph needed).
+    function rampAmbientVolume(target, duration, done) {
+      if (ambientFadeRaf) cancelAnimationFrame(ambientFadeRaf);
+      const startVol = ambientAudio.volume;
+      const start = performance.now();
+      function step(now) {
+        const p = duration <= 0 ? 1 : Math.min((now - start) / duration, 1);
+        try { ambientAudio.volume = Math.max(0, Math.min(1, startVol + (target - startVol) * p)); } catch (e) {}
+        if (p < 1) {
+          ambientFadeRaf = requestAnimationFrame(step);
+        } else {
+          ambientFadeRaf = null;
+          if (done) done();
+        }
+      }
+      ambientFadeRaf = requestAnimationFrame(step);
+    }
+
+    function fadeInAmbient() {
+      try {
+        ambientAudio.volume = 0;
+        const p = ambientAudio.play();
+        if (p && typeof p.catch === 'function') p.catch(() => {});
+      } catch (e) {}
+      rampAmbientVolume(AMBIENT_VOLUME, AMBIENT_FADE_IN_MS);
+    }
+
+    function fadeOutAmbient() {
+      rampAmbientVolume(0, AMBIENT_FADE_OUT_MS, () => {
+        try { ambientAudio.pause(); ambientAudio.currentTime = 0; } catch (e) {}
       });
+    }
+
+    function cancelWordClicks() {
+      clickTimeouts.forEach(clearTimeout);
+      clickTimeouts = [];
     }
 
     // Subtle per-word re-flash so sound + visual stay in sync on replay.
@@ -3415,18 +3528,25 @@
       w.el.classList.add('word-flash');
     }
 
-    function playHeroSoundExperience() {
-      heroSoundPlayed = true;
-      safePlay(chimeAudio, 0.5);
-      // Reduced motion: single soft chime only — no ticks, no re-flash.
-      if (reducedMotionMQ.matches) return;
+    // One shutter click per H1 word, scheduled on each word's reveal-start
+    // timestamp (offset = ms until the reveal begins, 0 for replays).
+    function playWordClicks(offset) {
+      cancelWordClicks();
       heroWords.forEach((w, i) => {
-        setTimeout(() => {
+        const t = setTimeout(() => {
           if (!soundOn) return;
-          safePlay(tickAudio, 0.25);
+          safePlay(clickAudio, CLICK_VOLUME);
           flashHeroWord(i);
-        }, w.at);
+        }, offset + w.at);
+        clickTimeouts.push(t);
       });
+    }
+
+    // Full soundscape for a sound-enabled entry: ambient fade-in + the
+    // 4-word shutter-pop sequence synced with the hero reveal.
+    function startHeroSoundscape(revealOffset) {
+      fadeInAmbient();
+      playWordClicks(revealOffset || 0);
     }
 
     function setSound(on) {
@@ -3435,43 +3555,46 @@
       if (soundToggle) {
         soundToggle.classList.toggle('on', on);
         soundToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
-        soundToggle.setAttribute('aria-label', on ? 'Mute hero sound' : 'Enable hero sound');
+        soundToggle.setAttribute('aria-label', on ? 'Mute sound' : 'Enable sound');
       }
-      if (!on) stopHeroSounds();
+      if (!on) {
+        cancelWordClicks();
+        fadeOutAmbient();
+      }
     }
 
     if (soundToggle) {
-      // Restore persisted preference (default: OFF / muted).
-      let storedSound = null;
-      try { storedSound = localStorage.getItem(SOUND_KEY); } catch (e) {}
-      setSound(storedSound === 'on');
-
       soundToggle.addEventListener('click', () => {
         const turningOn = !soundOn;
         setSound(turningOn);
         if (turningOn) {
-          // Immediately replay the hero reveal audio experience, synced
-          // with a gentle per-word re-flash of the headline.
-          playHeroSoundExperience();
+          // Fade the ambient in and replay the shutter-pop sequence once,
+          // synced with a gentle per-word re-flash of the headline.
+          startHeroSoundscape(0);
         }
       });
     }
 
-    // Returning visitors with sound ON: browsers still require a gesture, so
-    // the chime + word ticks are queued on the first interaction after the
-    // loader hides (called from hideLoaderAndReveal). Plays once per load.
-    function queueHeroSoundGesture() {
-      if (!soundOn || heroSoundPlayed) return;
-      const handler = () => {
-        window.removeEventListener('click', handler, true);
-        window.removeEventListener('keydown', handler, true);
-        window.removeEventListener('scroll', handler, true);
-        if (soundOn && !heroSoundPlayed) playHeroSoundExperience();
-      };
-      window.addEventListener('click', handler, true);
-      window.addEventListener('keydown', handler, true);
-      window.addEventListener('scroll', handler, true);
-    }
+    // Pause the ambient while the tab is hidden; resume on return if sound
+    // is still enabled.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (soundOn && !ambientAudio.paused) {
+          ambientPausedByVisibility = true;
+          if (ambientFadeRaf) { cancelAnimationFrame(ambientFadeRaf); ambientFadeRaf = null; }
+          try { ambientAudio.pause(); } catch (e) {}
+        }
+      } else if (ambientPausedByVisibility) {
+        ambientPausedByVisibility = false;
+        if (soundOn) {
+          try {
+            const p = ambientAudio.play();
+            if (p && typeof p.catch === 'function') p.catch(() => {});
+          } catch (e) {}
+          rampAmbientVolume(AMBIENT_VOLUME, 600);
+        }
+      }
+    });
 
     // ============================================
     // TEAM BIOS TOGGLE
