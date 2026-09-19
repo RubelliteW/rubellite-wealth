@@ -1767,6 +1767,12 @@
   from { transform: scale(1.02) translate(0,0); }
   to   { transform: scale(1.12) translate(-1.5%, -2%); }
 }
+/* Real-estate Ken Burns: starts wider (less zoomed in) than the shared kb */
+.re-service-section .kenburns img { animation-name: kbWide; }
+@keyframes kbWide {
+  from { transform: scale(1) translate(0,0); }
+  to   { transform: scale(1.09) translate(-1.2%, -1.6%); }
+}
 
 /* Philosophy section: cinematic left column */
 .intro-grid { align-items: center; }
@@ -1821,6 +1827,10 @@
 /* Process stage imagery */
 .process-strip { perspective: var(--persp-card); }
 .process-stage { transform-style: preserve-3d; box-shadow: var(--shadow-md); }
+/* Process steps: hovering/tapping a step enlarges the paired stage image */
+.process-stage { transition: transform .55s cubic-bezier(.22,1,.36,1), box-shadow .55s cubic-bezier(.22,1,.36,1); will-change: transform; }
+.process-stage.stage-active { transform: scale(1.14); box-shadow: 0 18px 44px rgba(43,35,29,.30); z-index: 2; position: relative; }
+.step-mini { cursor: pointer; }
 
 /* --- Responsive & motion guardrails --- */
 @media (max-width: 900px) {
@@ -1831,6 +1841,8 @@
 @media (prefers-reduced-motion: reduce) {
   .reveal { transform: none; }
   .kenburns img { animation: none; }
+  .re-service-section .kenburns img { animation: none; }
+  .process-stage { transition: none; }
   .gem3d { transform: none !important; }
   .hero-video { display: none; }
 }
@@ -2347,20 +2359,23 @@
 .quiz-result .btn-filled { margin-top: 1.5rem; }
 .quiz-restart { display: block; }
 
-/* Bronze primary CTAs on cream sections (contrast fix: light bronze fill,
-   dark text, slightly darker bronze hover) */
+/* Darken the italic accent word in the contact heading for readability */
+.contact-section h2 em { color: #5C4D3C; }
+
+/* Bronze primary CTAs on cream sections (contrast fix: deeper bronze fill,
+   cream text, darker bronze hover) */
 .contact-section .btn-filled,
 .form-submit.btn-filled {
-  background: var(--bright-2);
-  border-color: var(--bright-2);
-  color: var(--darkest);
+  background: #8A7052;
+  border-color: #8A7052;
+  color: #F7F5F0;
 }
 .contact-section .btn-filled::before,
-.form-submit.btn-filled::before { background: #A98F74; }
+.form-submit.btn-filled::before { background: #6E563F; }
 .contact-section .btn-filled:hover,
 .form-submit.btn-filled:hover {
-  color: var(--darkest);
-  border-color: #A98F74;
+  color: #F7F5F0;
+  border-color: #6E563F;
 }
 
 /* V6 responsive + motion guardrails */
@@ -2517,7 +2532,7 @@
       <div class="hero-content">
         <span class="eyebrow reveal">Corporate Estate, Succession & Real Estate Planning</span>
         <h1 class="reveal reveal-delay-1" id="heroHeadline">Securing Legacy.<br>Structuring Wealth.</h1>
-        <p class="hero-sub reveal reveal-delay-2">Three disciplines, one advisory. Rubellite aligns your corporation, your estate, and your real property under a single blueprint—ensuring that what you and your family have built, stands resilient across generations.</p>
+        <p class="hero-sub reveal reveal-delay-2">Three disciplines, one advisory. Rubellite aligns your corporation, your estate, and your real property under a single blueprint—ensuring what you and your family have built stands resilient across generations.</p>
         <div class="lexicon-card reveal reveal-delay-3">
           <svg class="lexicon-gem" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <polygon points="100,4 182,50 182,150 100,196 18,150 18,50" fill="none" stroke="#B8A088" stroke-width="6"/>
@@ -2612,13 +2627,11 @@
           <a href="#team" class="btn reveal reveal-delay-3" style="margin-top:2rem;">About the Firm</a>
         </div>
         <div class="intro-right">
-          <p class="reveal reveal-delay-1">Rubellite Wealth Management is a boutique advisory practice dedicated to the complex planning needs of incorporated business owners and their families across Canada. Every relationship is deeply personal, long-term, and built around the specific legal and tax structure of each client's enterprise.</p>
-          <p class="reveal reveal-delay-2">Rubellite carries no product shelf, answers to no head-office sales target, and accepts no compensation that does not come from the client it serves. Our counsel is shaped by one consideration only: what your estate, your corporation, and your successors actually require.</p>
-          <ul class="pledge-list reveal reveal-delay-3">
-            <li>We do not earn commissions on the structures we recommend.</li>
-            <li>We do not accept referral fees we would not be comfortable disclosing at your boardroom table.</li>
-            <li>We do not delegate a client file below principal level.</li>
-          </ul>
+          <p class="reveal reveal-delay-1">Rubellite Wealth is a boutique advisory practice dedicated to the complex planning needs of incorporated business owners, professionals, and families across Canada. Every relationship is deeply personal, long-term, and built around the specific legal and tax structure of each client's enterprise.</p>
+          <p class="reveal reveal-delay-1">Our counsel is shaped by one consideration only: what your estate, your corporation, and your successors actually require to build and preserve wealth across generations.</p>
+          <p class="reveal reveal-delay-2">We do not build template plans. Every structure is custom-architected to reflect the specific legal, corporate, and personal reality of your family.</p>
+          <p class="reveal reveal-delay-2">We align with your existing professional network, collaborating directly with your corporate accountants and legal advisors to ensure total strategy integration.</p>
+          <p class="reveal reveal-delay-3">We do not delegate a client file below principal level. From initial audit to multi-generational execution, your file stays directly with the founders.</p>
         </div>
       </div>
     </section>
@@ -2722,6 +2735,42 @@
             </div>
             <h4>Tax-Efficient Equity Extraction</h4>
             <p>Leverage property assets strategically to release liquidity for new ventures, succession planning, or investment opportunities without triggering unnecessary taxable events.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lead Magnet: Exit-Readiness Self-Assessment -->
+    <section class="assessment-section" id="assessment" aria-labelledby="assessment-heading">
+      <div class="assessment-inner">
+        <span class="intro-label reveal">Self-Assessment</span>
+        <h2 id="assessment-heading" class="reveal reveal-delay-1">Is your estate plan <em>exit-ready</em>?</h2>
+        <p class="assessment-lead reveal reveal-delay-2">A generation of Canadian owners is approaching the same threshold. Over the coming decade, more privately held businesses will change hands than in any period before it — and for each family, the outcome will be decided by structures put in place years earlier, or by their absence. Eight questions. Two minutes. A candid read on where you stand.</p>
+        <div class="quiz reveal reveal-delay-3" id="quiz">
+          <div class="quiz-start" id="quizStart">
+            <button class="btn btn-filled" id="quizBegin" type="button">Begin the Assessment</button>
+            <p class="quiz-note">Indicative only — this is not financial, legal, or tax advice, and no information is stored or sent.</p>
+          </div>
+          <div class="quiz-live" id="quizLive" hidden>
+            <div class="quiz-progress">
+              <span id="quizStepLabel">Question 1 of 8</span>
+              <div class="quiz-bar" aria-hidden="true"><div class="quiz-bar-fill" id="quizBarFill"></div></div>
+            </div>
+            <p class="quiz-question" id="quizQuestion" tabindex="-1"></p>
+            <div class="quiz-answers" role="group" aria-label="Your answer">
+              <button class="quiz-answer" type="button" data-score="2">Yes</button>
+              <button class="quiz-answer" type="button" data-score="1">Unsure</button>
+              <button class="quiz-answer" type="button" data-score="0">No</button>
+            </div>
+            <button class="quiz-back" id="quizBack" type="button">&larr; Previous question</button>
+          </div>
+          <div class="quiz-result" id="quizResult" hidden>
+            <span class="quiz-result-label">Your Result</span>
+            <h3 id="quizTier" tabindex="-1"></h3>
+            <p class="quiz-score" id="quizScore"></p>
+            <div id="quizGuidance" aria-live="polite"></div>
+            <button class="btn btn-filled" id="quizCta" type="button">Discuss Your Results With a Founder</button>
+            <button class="quiz-restart" id="quizRestart" type="button">Retake the assessment</button>
           </div>
         </div>
       </div>
@@ -2899,7 +2948,7 @@
         </div>
         <div class="credentials-grid">
           <div class="credential-item reveal reveal-delay-1">
-            <div class="credential-stat" data-count="25">0</div>
+            <div class="credential-stat" data-count="20">0</div>
             <p class="credential-label">Years Combined Experience</p>
           </div>
           <div class="credential-item reveal reveal-delay-2">
@@ -2948,42 +2997,6 @@
         <figure class="process-stage media-frame" style="height:180px; margin:0;"><img src="assets/img/process-analysis.jpg" alt="Document analysis" onerror="this.parentNode.style.display='none'"></figure>
         <figure class="process-stage media-frame" style="height:180px; margin:0;"><img src="assets/img/process-strategy.jpg" alt="Strategy design" onerror="this.parentNode.style.display='none'"></figure>
         <figure class="process-stage media-frame" style="height:180px; margin:0;"><img src="assets/img/process-implementation.jpg" alt="Implementation" onerror="this.parentNode.style.display='none'"></figure>
-      </div>
-    </section>
-
-    <!-- Lead Magnet: Exit-Readiness Self-Assessment -->
-    <section class="assessment-section" id="assessment" aria-labelledby="assessment-heading">
-      <div class="assessment-inner">
-        <span class="intro-label reveal">Self-Assessment</span>
-        <h2 id="assessment-heading" class="reveal reveal-delay-1">Is your estate plan <em>exit-ready</em>?</h2>
-        <p class="assessment-lead reveal reveal-delay-2">A generation of Canadian owners is approaching the same threshold. Over the coming decade, more privately held businesses will change hands than in any period before it — and for each family, the outcome will be decided by structures put in place years earlier, or by their absence. Eight questions. Two minutes. A candid read on where you stand.</p>
-        <div class="quiz reveal reveal-delay-3" id="quiz">
-          <div class="quiz-start" id="quizStart">
-            <button class="btn btn-filled" id="quizBegin" type="button">Begin the Assessment</button>
-            <p class="quiz-note">Indicative only — this is not financial, legal, or tax advice, and no information is stored or sent.</p>
-          </div>
-          <div class="quiz-live" id="quizLive" hidden>
-            <div class="quiz-progress">
-              <span id="quizStepLabel">Question 1 of 8</span>
-              <div class="quiz-bar" aria-hidden="true"><div class="quiz-bar-fill" id="quizBarFill"></div></div>
-            </div>
-            <p class="quiz-question" id="quizQuestion" tabindex="-1"></p>
-            <div class="quiz-answers" role="group" aria-label="Your answer">
-              <button class="quiz-answer" type="button" data-score="2">Yes</button>
-              <button class="quiz-answer" type="button" data-score="1">Unsure</button>
-              <button class="quiz-answer" type="button" data-score="0">No</button>
-            </div>
-            <button class="quiz-back" id="quizBack" type="button">&larr; Previous question</button>
-          </div>
-          <div class="quiz-result" id="quizResult" hidden>
-            <span class="quiz-result-label">Your Result</span>
-            <h3 id="quizTier" tabindex="-1"></h3>
-            <p class="quiz-score" id="quizScore"></p>
-            <div id="quizGuidance" aria-live="polite"></div>
-            <button class="btn btn-filled" id="quizCta" type="button">Discuss Your Results With a Founder</button>
-            <button class="quiz-restart" id="quizRestart" type="button">Retake the assessment</button>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -3818,6 +3831,44 @@
       const el = document.getElementById(id);
       if (el) spyObserver.observe(el);
     });
+
+    // ============================================
+    // PROCESS STEPS -> STAGE IMAGE ENLARGEMENT
+    // ============================================
+    (function () {
+      const steps = document.querySelectorAll('.step-mini');
+      const stages = document.querySelectorAll('figure.process-stage');
+      if (!steps.length || !stages.length) return;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      function activate(index) {
+        if (reduceMotion.matches) return;
+        const stage = stages[index];
+        if (stage) stage.classList.add('stage-active');
+      }
+      function deactivate(index) {
+        const stage = stages[index];
+        if (stage) stage.classList.remove('stage-active');
+      }
+      function clearAll() {
+        stages.forEach(stage => stage.classList.remove('stage-active'));
+      }
+
+      steps.forEach((step, index) => {
+        if (!stages[index]) return;
+        step.addEventListener('mouseenter', () => activate(index));
+        step.addEventListener('focusin', () => activate(index));
+        step.addEventListener('mouseleave', () => deactivate(index));
+        step.addEventListener('focusout', () => deactivate(index));
+        step.addEventListener('click', () => {
+          if (reduceMotion.matches) return;
+          const stage = stages[index];
+          const wasActive = stage.classList.contains('stage-active');
+          clearAll();
+          if (!wasActive) stage.classList.add('stage-active');
+        });
+      });
+    })();
   </script>
 
   <script>
