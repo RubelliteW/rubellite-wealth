@@ -858,16 +858,18 @@
     /* Team Preview */
     .team-preview {
       padding: 8rem 4rem;
-      max-width: 1300px;
-      margin: 0 auto;
+      background: var(--darkest);
+      color: var(--cream);
     }
+    .team-preview > div { max-width: 1300px; margin-left: auto; margin-right: auto; }
     .team-preview h2 {
       font-family: var(--font-display);
       font-size: clamp(1.8rem, 3.5vw, 2.8rem);
       font-weight: 300;
-      color: var(--darkest);
+      color: var(--cream);
       margin-bottom: 3rem;
     }
+    .team-preview h2 em { color: var(--bright-2); }
     .team-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -880,7 +882,8 @@
     .team-card-img {
       width: 100%;
       aspect-ratio: 1;
-      background: linear-gradient(135deg, var(--light-2), var(--light-1));
+      background: linear-gradient(135deg, var(--bright-1), #241C16);
+      border: 1px solid rgba(184, 160, 136, 0.25);
       border-radius: 4px;
       margin-bottom: 1.5rem;
       display: flex;
@@ -901,14 +904,14 @@
     }
     .team-card:hover .team-card-img {
       transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(43, 35, 29, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
     }
     .team-card:hover .team-card-img::after { opacity: 1; }
     .team-card h3 {
       font-family: var(--font-display);
       font-size: 1.3rem;
       font-weight: 400;
-      color: var(--darkest);
+      color: var(--cream);
       margin-bottom: 0.3rem;
     }
     .team-card .title {
@@ -921,8 +924,26 @@
     }
     .team-card .bio {
       font-size: 0.9rem;
-      color: var(--dark-1);
+      color: rgba(247, 245, 240, 0.7);
       line-height: 1.6;
+    }
+
+    /* Dark-section button variants for Meet the Founders */
+    .team-preview .btn-filled {
+      background: #8A7052;
+      border-color: #8A7052;
+      color: var(--cream);
+    }
+    .team-preview .btn-filled::before { background: #6E563F; }
+    .team-preview .btn-filled:hover { color: var(--cream); border-color: #6E563F; }
+    .team-preview .btn:not(.btn-filled) {
+      border-color: rgba(247, 245, 240, 0.55);
+      color: var(--cream);
+    }
+    .team-preview .btn:not(.btn-filled)::before { background: var(--cream); }
+    .team-preview .btn:not(.btn-filled):hover {
+      color: var(--darkest);
+      border-color: var(--cream);
     }
 
     /* Team Bios Full Page */
@@ -1812,7 +1833,7 @@
   font-family: var(--font-display); font-size: 3rem; color: var(--bright-2);
   background:
     radial-gradient(circle at 30% 25%, rgba(184,160,136,.25), transparent 55%),
-    linear-gradient(150deg, #E0D9CE, #B8A088 140%);
+    linear-gradient(150deg, #3C322A, #241C16 140%);
 }
 
 /* Canada map backdrop */
@@ -2158,6 +2179,24 @@
   border-radius: 50%;
   background: var(--bright-2);
 }
+/* Who We Are: bullet-point principles (matches pillar card treatment) */
+.philosophy-points { list-style: none; margin: 0.25rem 0 0; padding-left: 0.85rem; }
+.philosophy-points li {
+  position: relative;
+  font-size: 1.0rem;
+  font-style: italic;
+  color: var(--dark-1);
+  line-height: 1.8;
+  padding: 0.5rem 0 0.5rem 1.35rem;
+}
+.philosophy-points li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 1.15rem;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--bright-2);
+}
 .pillar-payoff {
   margin-top: auto;
   padding-top: 1rem;
@@ -2170,7 +2209,7 @@
 /* Founders-as-concierge */
 .concierge-line {
   font-size: 1.05rem;
-  color: var(--dark-1);
+  color: rgba(247, 245, 240, 0.75);
   line-height: 1.8;
   max-width: 62ch;
   margin: -1.25rem 0 3rem;
@@ -2204,8 +2243,8 @@
 /* Assessment / diagnostic quiz */
 .assessment-section {
   padding: 8rem 4rem;
-  background: var(--darkest);
-  color: var(--cream);
+  background: var(--cream);
+  color: var(--bright-1);
   position: relative;
   overflow: hidden;
 }
@@ -2214,7 +2253,7 @@
   position: absolute;
   bottom: -30%; right: -10%;
   width: 55%; height: 140%;
-  background: radial-gradient(ellipse at center, rgba(184, 160, 136, 0.07) 0%, transparent 60%);
+  background: radial-gradient(ellipse at center, rgba(184, 160, 136, 0.16) 0%, transparent 60%);
   pointer-events: none;
 }
 .assessment-inner {
@@ -2227,26 +2266,26 @@
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 3.5vw, 2.8rem);
   font-weight: 300;
-  color: var(--cream);
+  color: var(--darkest);
 }
-.assessment-section h2 em { color: var(--bright-2); }
+.assessment-section h2 em { color: var(--dark-2); }
 .assessment-lead {
-  color: rgba(247, 245, 240, 0.75);
+  color: var(--dark-1);
   font-size: 1.02rem;
   line-height: 1.8;
   max-width: 70ch;
   margin: 1.5rem 0 3rem;
 }
 .quiz {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(184, 160, 136, 0.25);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(60, 50, 42, 0.14);
   padding: 3rem;
   transition: opacity 0.35s ease;
 }
 .quiz.quiz-fading { opacity: 0; }
 .quiz-note {
   font-size: 0.78rem;
-  color: rgba(247, 245, 240, 0.5);
+  color: var(--dark-2);
   margin-top: 1.25rem;
   max-width: 46ch;
 }
@@ -2263,13 +2302,13 @@
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--bright-2);
+  color: #8A7052;
   white-space: nowrap;
 }
 .quiz-bar {
   flex: 1;
   height: 1px;
-  background: rgba(184, 160, 136, 0.25);
+  background: rgba(60, 50, 42, 0.18);
   position: relative;
 }
 .quiz-bar-fill {
@@ -2277,7 +2316,7 @@
   left: 0; top: -1px;
   height: 3px;
   width: 0;
-  background: var(--bright-2);
+  background: #8A7052;
   transition: width 0.5s var(--transition-smooth);
 }
 .quiz-question {
@@ -2285,7 +2324,7 @@
   font-size: clamp(1.25rem, 2.4vw, 1.65rem);
   font-weight: 300;
   line-height: 1.45;
-  color: var(--cream);
+  color: var(--darkest);
   margin-bottom: 2.25rem;
   outline: none;
   min-height: 2.9em;
@@ -2303,15 +2342,15 @@
   text-transform: uppercase;
   padding: 1.1rem 1rem;
   background: transparent;
-  border: 1px solid rgba(184, 160, 136, 0.45);
-  color: var(--cream);
+  border: 1px solid rgba(60, 50, 42, 0.35);
+  color: var(--bright-1);
   cursor: pointer;
   transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
 }
 .quiz-answer:hover, .quiz-answer:focus-visible {
-  background: var(--bright-2);
-  color: var(--darkest);
-  border-color: var(--bright-2);
+  background: #8A7052;
+  color: var(--cream);
+  border-color: #8A7052;
 }
 .quiz-back, .quiz-restart {
   display: inline-block;
@@ -2321,27 +2360,27 @@
   margin-top: 1.9rem;
   font-family: var(--font-body);
   font-size: 0.8rem;
-  color: rgba(247, 245, 240, 0.55);
+  color: var(--dark-2);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 4px;
-  text-decoration-color: rgba(184, 160, 136, 0.4);
+  text-decoration-color: rgba(60, 50, 42, 0.3);
   transition: color 0.3s ease;
 }
-.quiz-back:hover, .quiz-restart:hover { color: var(--bright-2); }
+.quiz-back:hover, .quiz-restart:hover { color: #8A7052; }
 .quiz-result-label {
   display: inline-block;
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--bright-2);
+  color: #8A7052;
 }
 .quiz-result h3 {
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   font-weight: 300;
-  color: var(--bright-2);
+  color: var(--darkest);
   margin: 0.75rem 0 0.5rem;
   outline: none;
 }
@@ -2349,11 +2388,11 @@
   font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(247, 245, 240, 0.6);
+  color: var(--dark-2);
   margin-bottom: 1.75rem;
 }
 .quiz-guidance-p {
-  color: rgba(247, 245, 240, 0.8);
+  color: var(--dark-1);
   font-size: 0.98rem;
   line-height: 1.8;
   margin-bottom: 1rem;
@@ -2606,9 +2645,11 @@
         <div class="intro-right">
           <p class="reveal reveal-delay-1">Rubellite Wealth is a boutique advisory practice dedicated to the complex planning needs of incorporated business owners, professionals, and families across Canada. Every relationship is deeply personal, long-term, and built around the specific legal and tax structure of each client's enterprise.</p>
           <p class="reveal reveal-delay-1">Our counsel is shaped by one consideration only: what your estate, your corporation, and your successors actually require to build and preserve wealth across generations.</p>
-          <p class="reveal reveal-delay-2">We do not build template plans. Every structure is custom-architected to reflect the specific legal, corporate, and personal reality of your family.</p>
-          <p class="reveal reveal-delay-2">We align with your existing professional network, collaborating directly with your corporate accountants and legal advisors to ensure total strategy integration.</p>
-          <p class="reveal reveal-delay-3">We do not delegate a client file below principal level. From initial audit to multi-generational execution, your file stays directly with the founders.</p>
+          <ul class="philosophy-points reveal reveal-delay-2">
+            <li>We do not build template plans. Every structure is custom-architected to reflect the specific legal, corporate, and personal reality of your family.</li>
+          <li>We align with your existing professional network, collaborating directly with your corporate accountants and legal advisors to ensure total strategy integration.</li>
+          <li>We do not delegate a client file below principal level. From initial audit to multi-generational execution, your file stays directly with the founders.</li>
+          </ul>
         </div>
       </div>
     </section>
