@@ -67,6 +67,18 @@
       visibility: hidden;
       pointer-events: none;
     }
+    .loader-gem {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(46vw, 380px);
+      height: min(46vw, 380px);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      animation: loaderGemFade 1.8s ease forwards 0.15s;
+      pointer-events: none;
+    }
+    @keyframes loaderGemFade { to { opacity: 0.09; } }
     .loader-logo {
       font-family: var(--font-display);
       font-size: 1.4rem;
@@ -77,6 +89,8 @@
       opacity: 0;
       animation: loaderFadeIn 0.8s ease forwards 0.2s;
       white-space: nowrap;
+      position: relative;
+      z-index: 1;
     }
     .loader-bar {
       width: 120px;
@@ -1837,6 +1851,12 @@
 
   <!-- Page Loader -->
   <div class="page-loader" id="pageLoader">
+    <svg class="loader-gem" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="100,4 182,50 182,150 100,196 18,150 18,50" fill="none" stroke="#B8A088" stroke-width="3"/>
+      <polygon points="100,30 158,64 158,136 100,170 42,136 42,64" fill="none" stroke="#B8A088" stroke-width="2" opacity="0.6"/>
+      <polygon points="100,55 135,76 135,124 100,145 65,124 65,76" fill="none" stroke="#B8A088" stroke-width="1.4" opacity="0.4"/>
+      <circle cx="100" cy="100" r="8" fill="#B8A088" opacity="0.5"/>
+    </svg>
     <div class="loader-logo">Rubellite Wealth</div>
     <div class="loader-bar"></div>
   </div>
@@ -1931,8 +1951,8 @@
         <h1 class="reveal reveal-delay-1" id="heroHeadline">Securing Legacy.<br>Structuring Wealth.</h1>
         <p class="hero-sub reveal reveal-delay-2">We work with you and your family to preserve what you've built — across generations.</p>
         <div class="hero-actions reveal reveal-delay-3">
-          <a href="#process" class="btn btn-filled">Our Process</a>
-          <a href="#philosophy" class="btn">Our Philosophy</a>
+          <a href="#philosophy" class="btn btn-filled">Our Philosophy</a>
+          <a href="#process" class="btn">Our Process</a>
         </div>
       </div>
       <div class="hero-scroll" aria-hidden="true">
@@ -1952,7 +1972,7 @@
           <span class="intro-label reveal">Who We Are</span>
           <h2 id="intro-heading" class="reveal reveal-delay-1">A different kind of wealth <em>practice</em></h2>
           <div class="divider reveal reveal-delay-2"></div>
-          <a href="#about" class="btn reveal reveal-delay-3" style="margin-top:2rem;">About the Firm</a>
+          <a href="#team" class="btn reveal reveal-delay-3" style="margin-top:2rem;">About the Firm</a>
         </div>
         <div class="intro-right">
           <p class="reveal reveal-delay-1">Rubellite Wealth Management is a boutique advisory practice dedicated to the complex financial needs of incorporated business owners and high-net-worth families across Canada.</p>
@@ -1970,7 +1990,7 @@
             <span class="intro-label reveal">What We Do</span>
             <h2 id="focus-heading" class="reveal reveal-delay-1">Four pillars of <em>focus</em></h2>
           </div>
-          <a href="#" class="btn reveal reveal-delay-2">All Focus Areas</a>
+          <a href="#realestate" class="btn reveal reveal-delay-2">All Focus Areas</a>
         </div>
         <div class="focus-grid" role="list">
           <article class="focus-card reveal reveal-delay-1" role="listitem">
@@ -2009,7 +2029,7 @@
           <h2 id="process-heading" class="reveal reveal-delay-1">A deliberate, <em>structured</em> engagement</h2>
           <div class="divider reveal reveal-delay-2"></div>
           <p class="reveal reveal-delay-2" style="color:var(--dark-1);margin-top:1.5rem;font-size:1.05rem;">Every client relationship begins with deep discovery — not product recommendations. We understand your structure before proposing solutions.</p>
-          <a href="#" class="btn reveal reveal-delay-3" style="margin-top:2.5rem;">See Full Process</a>
+          <a href="#realestate" class="btn reveal reveal-delay-3" style="margin-top:2.5rem;">See Full Process</a>
         </div>
         <div>
           <div class="step-mini reveal reveal-delay-1">
@@ -2147,7 +2167,7 @@
     </section>
 
     <!-- Canada Service Section -->
-    <section class="canada-service" id="about" aria-labelledby="canada-heading">
+    <section class="canada-service" id="reach" aria-labelledby="canada-heading">
       <div class="canada-map-bg parallax-bg" data-parallax="0.06" aria-hidden="true">
         <img src="assets/img/canada-map.png" alt="" onerror="this.parentNode.remove()">
       </div>
@@ -2177,7 +2197,7 @@
     </section>
 
     <!-- Gem Section (Why Rubellite) -->
-    <section class="gem-section" aria-label="About Rubellite">
+    <section class="gem-section" id="about" aria-label="About Rubellite">
       <div class="gem-macro parallax-bg" data-parallax="0.15" aria-hidden="true">
         <img src="assets/img/gem-macro.jpg" alt="" onerror="this.parentNode.remove()">
       </div>
@@ -2188,7 +2208,7 @@
           <div class="divider reveal reveal-delay-2" style="background:rgba(184,160,136,0.45);"></div>
           <p class="reveal reveal-delay-2">Rubellite is a rare variety of tourmaline — prized for its exceptional clarity and deep, enduring colour. Like the gemstone, our practice is defined by precision, rarity, and permanence.</p>
           <p class="reveal reveal-delay-3">We work with a select number of clients to ensure every relationship receives the depth of attention it deserves.</p>
-          <a href="#about" class="btn reveal reveal-delay-4" style="margin-top:2rem;">About the Firm</a>
+          <a href="#team" class="btn reveal reveal-delay-4" style="margin-top:2rem;">About the Firm</a>
         </div>
         <div class="gem-mark reveal-scale" aria-hidden="true">
           <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2318,7 +2338,7 @@
     <!-- Contact Section -->
     <section id="contact" class="contact-section" aria-labelledby="contact-heading">
       <h2 id="contact-heading" class="reveal">Begin a <em>conversation</em></h2>
-      <p class="lead reveal reveal-delay-1">Introductory consultations are complimentary and confidential. We work with incorporated business owners, professionals, and families with meaningful estate planning needs.</p>
+      <p class="lead reveal reveal-delay-1">Introductory consultations are complimentary and confidential. Click below and fill the form to start a focused discussion with our advisors. Let our team demonstrate the expertise and comprehensive solutions necessary to optimize your financial objectives.</p>
       <div class="contact-links reveal reveal-delay-2">
         <a href="mailto:info@rubellitewealth.com">info@rubellitewealth.com</a>
         <span>&#8212;</span>
@@ -2506,7 +2526,13 @@
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const href = this.getAttribute('href');
+        // Bare "#" (logos) = back to top
+        if (href === '#' || href === '#top') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+        const target = document.querySelector(href);
         if (target) {
           const offset = 80;
           const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
