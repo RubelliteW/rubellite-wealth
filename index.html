@@ -389,6 +389,7 @@
       letter-spacing: -0.02em;
       min-height: 1.2em;
     }
+    .hero-sub-mobile { display: none; }
     .hero-sub {
       font-size: 1.15rem;
       color: var(--dark-1);
@@ -1495,9 +1496,15 @@
       .bio-photo { max-width: 280px; margin: 0 auto; }
     }
     @media (max-width: 768px) {
-      .hero { padding: 7rem 1.5rem 5rem; }
-      .hero h1 { font-size: clamp(1.9rem, 9vw, 2.8rem); line-height: 1.12; }
-      .hero-sub { font-size: 1rem; }
+      .hero { padding: 5.5rem 1.25rem 4rem; }
+      .hero h1 { font-size: clamp(1.7rem, 7.5vw, 2.3rem); line-height: 1.15; }
+      .hero .eyebrow { font-size: 0.58rem; letter-spacing: 0.16em; margin-bottom: 1.4rem; line-height: 1.9; }
+      .hero .eyebrow::before, .hero .eyebrow::after { display: none; }
+      .hero-sub { font-size: 0.92rem; line-height: 1.7; margin-bottom: 2.25rem; }
+      .hero-sub-desktop { display: none; }
+      .hero-sub-mobile { display: block; }
+      .lexicon-card { display: none; }
+      .hero-scroll { display: none; }
       .testimonials-section, .intro, .credentials-section, .focus-section,
       .process-preview, .team-preview, .canada-service, .gem-section,
       .faq-section, .contact-section, .re-service-section, .team-bios-section { padding: 5rem 1.5rem; }
@@ -2573,7 +2580,10 @@
       <div class="hero-content">
         <span class="eyebrow reveal">Corporate Strategy • Estate Design • Debt Optimization</span>
         <h1 class="reveal reveal-delay-1" id="heroHeadline">Securing Legacy.<br>Structuring Wealth.</h1>
-        <p class="hero-sub reveal reveal-delay-2">Three disciplines, one advisory. Rubellite aligns your corporation, your estate, and your real property under a single blueprint—ensuring what you and your family have built stands resilient across generations.</p>
+        <div class="reveal reveal-delay-2">
+          <p class="hero-sub hero-sub-desktop">Three disciplines, one advisory. Rubellite aligns your corporation, your estate, and your real property under a single blueprint—ensuring what you and your family have built stands resilient across generations.</p>
+          <p class="hero-sub hero-sub-mobile">Three disciplines, one advisory. Your corporation, estate, and real property — aligned under a single blueprint, resilient across generations.</p>
+        </div>
         <div class="lexicon-card reveal reveal-delay-3">
           <svg class="lexicon-gem" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <polygon points="100,4 182,50 182,150 100,196 18,150 18,50" fill="none" stroke="#B8A088" stroke-width="6"/>
@@ -3058,16 +3068,7 @@
               <p>We specialize exclusively in corporate estate and succession planning. Rather than general investment advice, we coordinate across tax, legal, and investment strategy for incorporated business owners. This specialized focus means deeper expertise in your specific situation.</p>
             </div>
           </div>
-          <div class="faq-item">
-            <div class="faq-question">
-              <span>Who is a typical Rubellite client?</span>
-              <span class="faq-toggle">+</span>
-            </div>
-            <div class="faq-answer">
-              <p>While we frequently work with incorporated business owners, professionals (such as doctors, dentists, and lawyers), high-net-worth families, and their successors to optimize substantial assets and tax strategies, we strongly believe that no client is too small. Frankly, the sooner you start planning with us, the better positioned you will be for the future. Whether you are just starting to build your wealth or are looking to manage an existing estate, we are here to help you grow.</p>
-            </div>
-          </div>
-          <div class="faq-item">
+                    <div class="faq-item">
             <div class="faq-question">
               <span>Are you just another insurance broker?</span>
               <span class="faq-toggle">+</span>
@@ -3076,16 +3077,7 @@
               <p>Not at all. We view insurance not as a standalone product, but as a strategic lever within a complete financial plan. As wealth advisors, our core focus is helping you structure, protect, and grow your overall wealth — integrating tax planning, corporate strategies, and estate design to ensure every strategy actively protects and advances your long-term goals.</p>
             </div>
           </div>
-          <div class="faq-item">
-            <div class="faq-question">
-              <span>Do you help with real estate and debt management as part of wealth planning?</span>
-              <span class="faq-toggle">+</span>
-            </div>
-            <div class="faq-answer">
-              <p>Yes. Real estate is often a client's largest asset — and liability. With over 11 years of experience and $2B+ in funded real estate capital, we integrate property debt structuring, liquidity management, and corporate real estate financing directly into your overarching wealth and estate plan.</p>
-            </div>
-          </div>
-          <div class="faq-item">
+                    <div class="faq-item">
             <div class="faq-question">
               <span>What if I already have a financial plan or structure in place?</span>
               <span class="faq-toggle">+</span>
@@ -3103,16 +3095,7 @@
               <p>The transfer will happen with or without one. Without documented direction, control and value are divided by default rules written for no one in particular — assessed, probated, and taxed before a single wish is honoured. A plan is the only voice you keep in the room. Our work is to make certain it speaks clearly, divides fairly, and costs the people in it as little as the law allows.</p>
             </div>
           </div>
-          <div class="faq-item">
-            <div class="faq-question">
-              <span>How is a boutique different from a bank-owned firm?</span>
-              <span class="faq-toggle">+</span>
-            </div>
-            <div class="faq-answer">
-              <p>Independence, structurally. Rubellite carries no product shelf, answers to no head-office sales target, and accepts no compensation that does not come from the client it serves. The principals who design your plan are the people accountable for standing behind it — there is no rotating desk, and no file passed down the hall.</p>
-            </div>
-          </div>
-          <div class="faq-item">
+                    <div class="faq-item">
             <div class="faq-question">
               <span>Is there a minimum to work with Rubellite?</span>
               <span class="faq-toggle">+</span>
